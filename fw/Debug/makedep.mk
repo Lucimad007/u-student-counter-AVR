@@ -2,6 +2,8 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+src\buzzer.c
+
 src\eeprom.c
 
 src\keypad.c

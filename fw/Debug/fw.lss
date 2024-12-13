@@ -3,31 +3,31 @@ fw.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         0000013c  00000000  00000000  00000074  2**1
+  0 .text         000001ea  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         0000001a  00800060  0000013c  000001b0  2**0
+  1 .data         0000001a  00800060  000001ea  0000025e  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .comment      00000030  00000000  00000000  000001ca  2**0
+  2 .comment      00000030  00000000  00000000  00000278  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001fc  2**2
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000002a8  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000068  00000000  00000000  00000238  2**0
+  4 .debug_aranges 000000b0  00000000  00000000  000002e4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000932  00000000  00000000  000002a0  2**0
+  5 .debug_info   00000d03  00000000  00000000  00000394  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000699  00000000  00000000  00000bd2  2**0
+  6 .debug_abbrev 00000849  00000000  00000000  00001097  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000666  00000000  00000000  0000126b  2**0
+  7 .debug_line   000009a3  00000000  00000000  000018e0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  000000a8  00000000  00000000  000018d4  2**2
+  8 .debug_frame  0000011c  00000000  00000000  00002284  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00006115  00000000  00000000  0000197c  2**0
+  9 .debug_str    00006180  00000000  00000000  000023a0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    0000023c  00000000  00000000  00007a91  2**0
+ 10 .debug_loc    00000484  00000000  00000000  00008520  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000048  00000000  00000000  00007ccd  2**0
+ 11 .debug_ranges 000000a0  00000000  00000000  000089a4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  0000019d  00000000  00000000  00007d15  2**0
+ 12 .debug_macro  000022a2  00000000  00000000  00008a44  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -88,7 +88,7 @@ Disassembly of section .text:
   60:	10 e0       	ldi	r17, 0x00	; 0
   62:	a0 e6       	ldi	r26, 0x60	; 96
   64:	b0 e0       	ldi	r27, 0x00	; 0
-  66:	ec e3       	ldi	r30, 0x3C	; 60
+  66:	ea ee       	ldi	r30, 0xEA	; 234
   68:	f1 e0       	ldi	r31, 0x01	; 1
   6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
   6c:	05 90       	lpm	r0, Z+
@@ -96,180 +96,297 @@ Disassembly of section .text:
   70:	aa 37       	cpi	r26, 0x7A	; 122
   72:	b1 07       	cpc	r27, r17
   74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
-  76:	5d d0       	rcall	.+186    	; 0x132 <main>
-  78:	5f c0       	rjmp	.+190    	; 0x138 <_exit>
+  76:	95 d0       	rcall	.+298    	; 0x1a2 <main>
+  78:	b6 c0       	rjmp	.+364    	; 0x1e6 <_exit>
 
 0000007a <__bad_interrupt>:
   7a:	c2 cf       	rjmp	.-124    	; 0x0 <__vectors>
 
-0000007c <LCD_Command>:
+0000007c <Buzzer_Init>:
+#include <avr/io.h>
+#include <util/delay.h>
+#include "buzzer.h"
+
+void Buzzer_Init(void) {
+	DDRB |= (1 << BUZZER_PIN); // Set BUZZER_PIN as output
+  7c:	b8 9a       	sbi	0x17, 0	; 23
+	PORTB &= ~(1 << BUZZER_PIN); // Ensure the buzzer is off initially
+  7e:	c0 98       	cbi	0x18, 0	; 24
+  80:	08 95       	ret
+
+00000082 <Buzzer_On>:
+}
+
+void Buzzer_On(void) {
+	PORTB |= (1 << BUZZER_PIN); // Set BUZZER_PIN high
+  82:	c0 9a       	sbi	0x18, 0	; 24
+  84:	08 95       	ret
+
+00000086 <Buzzer_Off>:
+}
+
+void Buzzer_Off(void) {
+	PORTB &= ~(1 << BUZZER_PIN); // Set BUZZER_PIN low
+  86:	c0 98       	cbi	0x18, 0	; 24
+  88:	08 95       	ret
+
+0000008a <Buzzer_Beep>:
+}
+
+void Buzzer_Beep(void) {
+  8a:	fb df       	rcall	.-10     	; 0x82 <Buzzer_On>
+  8c:	8f e4       	ldi	r24, 0x4F	; 79
+  8e:	93 ec       	ldi	r25, 0xC3	; 195
+  90:	01 97       	sbiw	r24, 0x01	; 1
+  92:	f1 f7       	brne	.-4      	; 0x90 <Buzzer_Beep+0x6>
+  94:	00 c0       	rjmp	.+0      	; 0x96 <Buzzer_Beep+0xc>
+  96:	00 00       	nop
+  98:	f6 df       	rcall	.-20     	; 0x86 <Buzzer_Off>
+  9a:	87 ea       	ldi	r24, 0xA7	; 167
+  9c:	91 e6       	ldi	r25, 0x61	; 97
+  9e:	01 97       	sbiw	r24, 0x01	; 1
+  a0:	f1 f7       	brne	.-4      	; 0x9e <Buzzer_Beep+0x14>
+  a2:	00 c0       	rjmp	.+0      	; 0xa4 <Buzzer_Beep+0x1a>
+  a4:	00 00       	nop
+  a6:	08 95       	ret
+
+000000a8 <Buzzer_CriticalWarning>:
+  a8:	f0 df       	rcall	.-32     	; 0x8a <Buzzer_Beep>
+  aa:	8f e4       	ldi	r24, 0x4F	; 79
+  ac:	93 ec       	ldi	r25, 0xC3	; 195
+  ae:	01 97       	sbiw	r24, 0x01	; 1
+  b0:	f1 f7       	brne	.-4      	; 0xae <Buzzer_CriticalWarning+0x6>
+  b2:	00 c0       	rjmp	.+0      	; 0xb4 <Buzzer_CriticalWarning+0xc>
+  b4:	00 00       	nop
+  b6:	e9 df       	rcall	.-46     	; 0x8a <Buzzer_Beep>
+  b8:	8f e4       	ldi	r24, 0x4F	; 79
+  ba:	93 ec       	ldi	r25, 0xC3	; 195
+  bc:	01 97       	sbiw	r24, 0x01	; 1
+  be:	f1 f7       	brne	.-4      	; 0xbc <Buzzer_CriticalWarning+0x14>
+  c0:	00 c0       	rjmp	.+0      	; 0xc2 <Buzzer_CriticalWarning+0x1a>
+  c2:	00 00       	nop
+  c4:	e2 df       	rcall	.-60     	; 0x8a <Buzzer_Beep>
+  c6:	8f e4       	ldi	r24, 0x4F	; 79
+  c8:	93 ec       	ldi	r25, 0xC3	; 195
+  ca:	01 97       	sbiw	r24, 0x01	; 1
+  cc:	f1 f7       	brne	.-4      	; 0xca <Buzzer_CriticalWarning+0x22>
+  ce:	00 c0       	rjmp	.+0      	; 0xd0 <Buzzer_CriticalWarning+0x28>
+  d0:	00 00       	nop
+  d2:	08 95       	ret
+
+000000d4 <Buzzer_Success>:
+  d4:	d6 df       	rcall	.-84     	; 0x82 <Buzzer_On>
+  d6:	2f e9       	ldi	r18, 0x9F	; 159
+  d8:	86 e8       	ldi	r24, 0x86	; 134
+  da:	91 e0       	ldi	r25, 0x01	; 1
+  dc:	21 50       	subi	r18, 0x01	; 1
+  de:	80 40       	sbci	r24, 0x00	; 0
+  e0:	90 40       	sbci	r25, 0x00	; 0
+  e2:	e1 f7       	brne	.-8      	; 0xdc <Buzzer_Success+0x8>
+  e4:	00 c0       	rjmp	.+0      	; 0xe6 <Buzzer_Success+0x12>
+  e6:	00 00       	nop
+  e8:	ce cf       	rjmp	.-100    	; 0x86 <Buzzer_Off>
+  ea:	08 95       	ret
+
+000000ec <LCD_Command>:
 #include <avr/io.h>
 #include <util/delay.h>
 #include "lcd.h"
 
 void LCD_Command(unsigned char cmd) {
 	PORTC = cmd;
-  7c:	85 bb       	out	0x15, r24	; 21
+  ec:	85 bb       	out	0x15, r24	; 21
 	PORTC &= ~(1 << RS); // RS = 0 for command
-  7e:	a8 98       	cbi	0x15, 0	; 21
+  ee:	a8 98       	cbi	0x15, 0	; 21
 	PORTC |= (1 << EN);  // Enable pulse
-  80:	a9 9a       	sbi	0x15, 1	; 21
+  f0:	a9 9a       	sbi	0x15, 1	; 21
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-  82:	89 ef       	ldi	r24, 0xF9	; 249
-  84:	90 e0       	ldi	r25, 0x00	; 0
-  86:	01 97       	sbiw	r24, 0x01	; 1
-  88:	f1 f7       	brne	.-4      	; 0x86 <LCD_Command+0xa>
-  8a:	00 c0       	rjmp	.+0      	; 0x8c <LCD_Command+0x10>
-  8c:	00 00       	nop
+  f2:	89 ef       	ldi	r24, 0xF9	; 249
+  f4:	90 e0       	ldi	r25, 0x00	; 0
+  f6:	01 97       	sbiw	r24, 0x01	; 1
+  f8:	f1 f7       	brne	.-4      	; 0xf6 <LCD_Command+0xa>
+  fa:	00 c0       	rjmp	.+0      	; 0xfc <LCD_Command+0x10>
+  fc:	00 00       	nop
 	_delay_ms(1);
 	PORTC &= ~(1 << EN);
-  8e:	a9 98       	cbi	0x15, 1	; 21
-  90:	83 ef       	ldi	r24, 0xF3	; 243
-  92:	91 e0       	ldi	r25, 0x01	; 1
-  94:	01 97       	sbiw	r24, 0x01	; 1
-  96:	f1 f7       	brne	.-4      	; 0x94 <LCD_Command+0x18>
-  98:	00 c0       	rjmp	.+0      	; 0x9a <LCD_Command+0x1e>
-  9a:	00 00       	nop
-  9c:	08 95       	ret
+  fe:	a9 98       	cbi	0x15, 1	; 21
+ 100:	83 ef       	ldi	r24, 0xF3	; 243
+ 102:	91 e0       	ldi	r25, 0x01	; 1
+ 104:	01 97       	sbiw	r24, 0x01	; 1
+ 106:	f1 f7       	brne	.-4      	; 0x104 <LCD_Command+0x18>
+ 108:	00 c0       	rjmp	.+0      	; 0x10a <LCD_Command+0x1e>
+ 10a:	00 00       	nop
+ 10c:	08 95       	ret
 
-0000009e <LCD_Init>:
+0000010e <LCD_Init>:
 	_delay_ms(2);
 }
 
 void LCD_Init(void) {
 	DDRC = 0xFF;
-  9e:	8f ef       	ldi	r24, 0xFF	; 255
-  a0:	84 bb       	out	0x14, r24	; 20
-  a2:	87 e8       	ldi	r24, 0x87	; 135
-  a4:	93 e1       	ldi	r25, 0x13	; 19
-  a6:	01 97       	sbiw	r24, 0x01	; 1
-  a8:	f1 f7       	brne	.-4      	; 0xa6 <LCD_Init+0x8>
-  aa:	00 c0       	rjmp	.+0      	; 0xac <LCD_Init+0xe>
-  ac:	00 00       	nop
+ 10e:	8f ef       	ldi	r24, 0xFF	; 255
+ 110:	84 bb       	out	0x14, r24	; 20
+ 112:	87 e8       	ldi	r24, 0x87	; 135
+ 114:	93 e1       	ldi	r25, 0x13	; 19
+ 116:	01 97       	sbiw	r24, 0x01	; 1
+ 118:	f1 f7       	brne	.-4      	; 0x116 <LCD_Init+0x8>
+ 11a:	00 c0       	rjmp	.+0      	; 0x11c <LCD_Init+0xe>
+ 11c:	00 00       	nop
 	_delay_ms(20);
 	LCD_Command(0x38); // 8-bit mode
-  ae:	88 e3       	ldi	r24, 0x38	; 56
+ 11e:	88 e3       	ldi	r24, 0x38	; 56
 	LCD_Command(0x0C); // Display ON, cursor OFF
-  b0:	e5 df       	rcall	.-54     	; 0x7c <LCD_Command>
+ 120:	e5 df       	rcall	.-54     	; 0xec <LCD_Command>
 	LCD_Command(0x01); // Clear display
-  b2:	8c e0       	ldi	r24, 0x0C	; 12
-  b4:	e3 df       	rcall	.-58     	; 0x7c <LCD_Command>
-  b6:	81 e0       	ldi	r24, 0x01	; 1
-  b8:	e1 cf       	rjmp	.-62     	; 0x7c <LCD_Command>
-  ba:	08 95       	ret
+ 122:	8c e0       	ldi	r24, 0x0C	; 12
+ 124:	e3 df       	rcall	.-58     	; 0xec <LCD_Command>
+ 126:	81 e0       	ldi	r24, 0x01	; 1
+ 128:	e1 cf       	rjmp	.-62     	; 0xec <LCD_Command>
+ 12a:	08 95       	ret
 
-000000bc <LCD_Print>:
+0000012c <LCD_Print>:
 }
 
 void LCD_Print(char *str) {
-  bc:	fc 01       	movw	r30, r24
+ 12c:	fc 01       	movw	r30, r24
 	while (*str) {
-  be:	90 81       	ld	r25, Z
-  c0:	99 23       	and	r25, r25
-  c2:	a1 f0       	breq	.+40     	; 0xec <LCD_Print+0x30>
-  c4:	31 96       	adiw	r30, 0x01	; 1
+ 12e:	90 81       	ld	r25, Z
+ 130:	99 23       	and	r25, r25
+ 132:	a1 f0       	breq	.+40     	; 0x15c <LCD_Print+0x30>
+ 134:	31 96       	adiw	r30, 0x01	; 1
 		PORTC = *str++;
-  c6:	95 bb       	out	0x15, r25	; 21
+ 136:	95 bb       	out	0x15, r25	; 21
 		PORTC |= (1 << RS); // RS = 1 for data
-  c8:	a8 9a       	sbi	0x15, 0	; 21
+ 138:	a8 9a       	sbi	0x15, 0	; 21
 		PORTC |= (1 << EN);
-  ca:	a9 9a       	sbi	0x15, 1	; 21
-  cc:	89 ef       	ldi	r24, 0xF9	; 249
-  ce:	90 e0       	ldi	r25, 0x00	; 0
-  d0:	01 97       	sbiw	r24, 0x01	; 1
-  d2:	f1 f7       	brne	.-4      	; 0xd0 <LCD_Print+0x14>
-  d4:	00 c0       	rjmp	.+0      	; 0xd6 <LCD_Print+0x1a>
-  d6:	00 00       	nop
+ 13a:	a9 9a       	sbi	0x15, 1	; 21
+ 13c:	89 ef       	ldi	r24, 0xF9	; 249
+ 13e:	90 e0       	ldi	r25, 0x00	; 0
+ 140:	01 97       	sbiw	r24, 0x01	; 1
+ 142:	f1 f7       	brne	.-4      	; 0x140 <LCD_Print+0x14>
+ 144:	00 c0       	rjmp	.+0      	; 0x146 <LCD_Print+0x1a>
+ 146:	00 00       	nop
 		_delay_ms(1);
 		PORTC &= ~(1 << EN);
-  d8:	a9 98       	cbi	0x15, 1	; 21
-  da:	83 ef       	ldi	r24, 0xF3	; 243
-  dc:	91 e0       	ldi	r25, 0x01	; 1
-  de:	01 97       	sbiw	r24, 0x01	; 1
-  e0:	f1 f7       	brne	.-4      	; 0xde <LCD_Print+0x22>
-  e2:	00 c0       	rjmp	.+0      	; 0xe4 <LCD_Print+0x28>
-  e4:	00 00       	nop
+ 148:	a9 98       	cbi	0x15, 1	; 21
+ 14a:	83 ef       	ldi	r24, 0xF3	; 243
+ 14c:	91 e0       	ldi	r25, 0x01	; 1
+ 14e:	01 97       	sbiw	r24, 0x01	; 1
+ 150:	f1 f7       	brne	.-4      	; 0x14e <LCD_Print+0x22>
+ 152:	00 c0       	rjmp	.+0      	; 0x154 <LCD_Print+0x28>
+ 154:	00 00       	nop
 	LCD_Command(0x0C); // Display ON, cursor OFF
 	LCD_Command(0x01); // Clear display
 }
 
 void LCD_Print(char *str) {
 	while (*str) {
-  e6:	91 91       	ld	r25, Z+
-  e8:	91 11       	cpse	r25, r1
-  ea:	ed cf       	rjmp	.-38     	; 0xc6 <LCD_Print+0xa>
-  ec:	08 95       	ret
+ 156:	91 91       	ld	r25, Z+
+ 158:	91 11       	cpse	r25, r1
+ 15a:	ed cf       	rjmp	.-38     	; 0x136 <LCD_Print+0xa>
+ 15c:	08 95       	ret
 
-000000ee <LCD_Clear>:
+0000015e <LCD_Clear>:
 		_delay_ms(2);
 	}
 }
 
 void LCD_Clear(void) {
 	LCD_Command(0x01); // Clear display
-  ee:	81 e0       	ldi	r24, 0x01	; 1
-  f0:	c5 cf       	rjmp	.-118    	; 0x7c <LCD_Command>
-  f2:	08 95       	ret
+ 15e:	81 e0       	ldi	r24, 0x01	; 1
+ 160:	c5 cf       	rjmp	.-118    	; 0xec <LCD_Command>
+ 162:	08 95       	ret
 
-000000f4 <LCD_SetCursor>:
+00000164 <LCD_SetCursor>:
 }
 
 void LCD_SetCursor(unsigned char row, unsigned char col) {
-  f4:	cf 93       	push	r28
-  f6:	df 93       	push	r29
-  f8:	00 d0       	rcall	.+0      	; 0xfa <LCD_SetCursor+0x6>
-  fa:	cd b7       	in	r28, 0x3d	; 61
-  fc:	de b7       	in	r29, 0x3e	; 62
+ 164:	cf 93       	push	r28
+ 166:	df 93       	push	r29
+ 168:	00 d0       	rcall	.+0      	; 0x16a <LCD_SetCursor+0x6>
+ 16a:	cd b7       	in	r28, 0x3d	; 61
+ 16c:	de b7       	in	r29, 0x3e	; 62
 	unsigned char pos[] = {0x80, 0xC0};
-  fe:	90 e8       	ldi	r25, 0x80	; 128
- 100:	99 83       	std	Y+1, r25	; 0x01
- 102:	90 ec       	ldi	r25, 0xC0	; 192
- 104:	9a 83       	std	Y+2, r25	; 0x02
+ 16e:	90 e8       	ldi	r25, 0x80	; 128
+ 170:	99 83       	std	Y+1, r25	; 0x01
+ 172:	90 ec       	ldi	r25, 0xC0	; 192
+ 174:	9a 83       	std	Y+2, r25	; 0x02
 	LCD_Command(pos[row - 1] + col);
- 106:	fe 01       	movw	r30, r28
- 108:	e8 0f       	add	r30, r24
- 10a:	f1 1d       	adc	r31, r1
- 10c:	80 81       	ld	r24, Z
- 10e:	86 0f       	add	r24, r22
- 110:	b5 df       	rcall	.-150    	; 0x7c <LCD_Command>
+ 176:	fe 01       	movw	r30, r28
+ 178:	e8 0f       	add	r30, r24
+ 17a:	f1 1d       	adc	r31, r1
+ 17c:	80 81       	ld	r24, Z
+ 17e:	86 0f       	add	r24, r22
+ 180:	b5 df       	rcall	.-150    	; 0xec <LCD_Command>
 }
- 112:	0f 90       	pop	r0
- 114:	0f 90       	pop	r0
- 116:	df 91       	pop	r29
- 118:	cf 91       	pop	r28
- 11a:	08 95       	ret
+ 182:	0f 90       	pop	r0
+ 184:	0f 90       	pop	r0
+ 186:	df 91       	pop	r29
+ 188:	cf 91       	pop	r28
+ 18a:	08 95       	ret
 
-0000011c <Show_Menu>:
+0000018c <Show_Menu>:
 
-#define F_CPU 16000000UL
+//#define F_CPU 16000000UL
 
 void Show_Menu(void);
 
 void Show_Menu(void) {
- 11c:	e8 df       	rcall	.-48     	; 0xee <LCD_Clear>
- 11e:	80 e6       	ldi	r24, 0x60	; 96
- 120:	90 e0       	ldi	r25, 0x00	; 0
- 122:	cc df       	rcall	.-104    	; 0xbc <LCD_Print>
- 124:	60 e0       	ldi	r22, 0x00	; 0
- 126:	83 e0       	ldi	r24, 0x03	; 3
- 128:	e5 df       	rcall	.-54     	; 0xf4 <LCD_SetCursor>
- 12a:	8e e6       	ldi	r24, 0x6E	; 110
- 12c:	90 e0       	ldi	r25, 0x00	; 0
- 12e:	c6 cf       	rjmp	.-116    	; 0xbc <LCD_Print>
- 130:	08 95       	ret
+ 18c:	e8 df       	rcall	.-48     	; 0x15e <LCD_Clear>
+ 18e:	80 e6       	ldi	r24, 0x60	; 96
+ 190:	90 e0       	ldi	r25, 0x00	; 0
+ 192:	cc df       	rcall	.-104    	; 0x12c <LCD_Print>
+ 194:	60 e0       	ldi	r22, 0x00	; 0
+ 196:	82 e0       	ldi	r24, 0x02	; 2
+ 198:	e5 df       	rcall	.-54     	; 0x164 <LCD_SetCursor>
+ 19a:	8e e6       	ldi	r24, 0x6E	; 110
+ 19c:	90 e0       	ldi	r25, 0x00	; 0
+ 19e:	c6 cf       	rjmp	.-116    	; 0x12c <LCD_Print>
+ 1a0:	08 95       	ret
 
-00000132 <main>:
- 132:	b5 df       	rcall	.-150    	; 0x9e <LCD_Init>
- 134:	f3 df       	rcall	.-26     	; 0x11c <Show_Menu>
- 136:	fe cf       	rjmp	.-4      	; 0x134 <main+0x2>
+000001a2 <main>:
+ 1a2:	b5 df       	rcall	.-150    	; 0x10e <LCD_Init>
+ 1a4:	6b df       	rcall	.-298    	; 0x7c <Buzzer_Init>
+ 1a6:	f2 df       	rcall	.-28     	; 0x18c <Show_Menu>
+ 1a8:	70 df       	rcall	.-288    	; 0x8a <Buzzer_Beep>
+ 1aa:	2f e3       	ldi	r18, 0x3F	; 63
+ 1ac:	8d e0       	ldi	r24, 0x0D	; 13
+ 1ae:	93 e0       	ldi	r25, 0x03	; 3
+ 1b0:	21 50       	subi	r18, 0x01	; 1
+ 1b2:	80 40       	sbci	r24, 0x00	; 0
+ 1b4:	90 40       	sbci	r25, 0x00	; 0
+ 1b6:	e1 f7       	brne	.-8      	; 0x1b0 <main+0xe>
+ 1b8:	00 c0       	rjmp	.+0      	; 0x1ba <main+0x18>
+ 1ba:	00 00       	nop
+ 1bc:	8b df       	rcall	.-234    	; 0xd4 <Buzzer_Success>
+ 1be:	2f e3       	ldi	r18, 0x3F	; 63
+ 1c0:	8d e0       	ldi	r24, 0x0D	; 13
+ 1c2:	93 e0       	ldi	r25, 0x03	; 3
+ 1c4:	21 50       	subi	r18, 0x01	; 1
+ 1c6:	80 40       	sbci	r24, 0x00	; 0
+ 1c8:	90 40       	sbci	r25, 0x00	; 0
+ 1ca:	e1 f7       	brne	.-8      	; 0x1c4 <main+0x22>
+ 1cc:	00 c0       	rjmp	.+0      	; 0x1ce <main+0x2c>
+ 1ce:	00 00       	nop
+ 1d0:	6b df       	rcall	.-298    	; 0xa8 <Buzzer_CriticalWarning>
+ 1d2:	2f e7       	ldi	r18, 0x7F	; 127
+ 1d4:	8a e1       	ldi	r24, 0x1A	; 26
+ 1d6:	96 e0       	ldi	r25, 0x06	; 6
+ 1d8:	21 50       	subi	r18, 0x01	; 1
+ 1da:	80 40       	sbci	r24, 0x00	; 0
+ 1dc:	90 40       	sbci	r25, 0x00	; 0
+ 1de:	e1 f7       	brne	.-8      	; 0x1d8 <main+0x36>
+ 1e0:	00 c0       	rjmp	.+0      	; 0x1e2 <main+0x40>
+ 1e2:	00 00       	nop
+ 1e4:	e0 cf       	rjmp	.-64     	; 0x1a6 <main+0x4>
 
-00000138 <_exit>:
- 138:	f8 94       	cli
+000001e6 <_exit>:
+ 1e6:	f8 94       	cli
 
-0000013a <__stop_program>:
- 13a:	ff cf       	rjmp	.-2      	; 0x13a <__stop_program>
+000001e8 <__stop_program>:
+ 1e8:	ff cf       	rjmp	.-2      	; 0x1e8 <__stop_program>

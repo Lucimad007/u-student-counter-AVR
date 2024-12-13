@@ -188,6 +188,12 @@
     <Folder Include="src\config\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\buzzer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\buzzer.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\eeprom.c">
       <SubType>compile</SubType>
     </Compile>

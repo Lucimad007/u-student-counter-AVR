@@ -6,5 +6,7 @@
 
 void Sensors_Init(void);
 int Sensors_Read(void);
+int Read_Sonar(void);
+int Read_Temperature(void);
 
 #endif

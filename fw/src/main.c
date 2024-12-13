@@ -4,8 +4,9 @@
 #include "keypad.h"
 #include "eeprom.h"
 #include "sensors.h"
+#include "buzzer.h"
 
-#define F_CPU 16000000UL
+//#define F_CPU 16000000UL
 
 void Show_Menu(void);
 
@@ -18,6 +19,7 @@ void Show_Menu(void) {
 
 void main(void) {
 	LCD_Init();
+	Buzzer_Init();
 	
 	while (1) {
 		Show_Menu();
@@ -36,5 +38,21 @@ void main(void) {
 			//LCD_Print(buffer);
 			//_delay_ms(2000);
 		//}
+	
+	
+	
+	//------------------------------- testing bbuzer ---------------------------
+	
+	 Buzzer_Beep();
+	 _delay_ms(1000); 
+
+	 Buzzer_Success();
+	 _delay_ms(1000); 
+
+	 Buzzer_CriticalWarning();
+	 _delay_ms(2000); 
+	
+	//------------------------------- testing bbuzer ---------------------------
+	
 	}
 }
