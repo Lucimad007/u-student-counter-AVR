@@ -21,6 +21,26 @@ void main(void) {
 	LCD_Init();
 	Buzzer_Init();
 	
+	//------------------------------- testing eeprom ---------------------------
+
+	
+	char buffer[20];
+	unsigned int address;
+	DDRB = 0xFF; // Set PORTB as output
+	PORTB = 0x00; // Turn off all LEDs
+
+	EEPROM_Clear();
+
+	const char* testData = "now we are in eeprom";
+	address = EEPROM_FindNextAddress();
+	EEPROM_WriteString(address, testData);
+	EEPROM_ReadString(address, buffer, sizeof(testData)); // Length of "Hello, EEPROM!" + null terminator
+
+	PORTB = buffer[0];
+	//------------------------------- testing eeprom ---------------------------
+	
+	
+	
 	while (1) {
 		Show_Menu();
 		//char key = Keypad_GetKey();
@@ -43,16 +63,18 @@ void main(void) {
 	
 	//------------------------------- testing bbuzer ---------------------------
 	
-	 Buzzer_Beep();
-	 _delay_ms(1000); 
-
-	 Buzzer_Success();
-	 _delay_ms(1000); 
-
-	 Buzzer_CriticalWarning();
-	 _delay_ms(2000); 
+	 //Buzzer_Beep();
+	 //_delay_ms(1000); 
+//
+	 //Buzzer_Success();
+	 //_delay_ms(1000); 
+//
+	 //Buzzer_CriticalWarning();
+	 //_delay_ms(2000); 
 	
 	//------------------------------- testing bbuzer ---------------------------
+	
+	
 	
 	}
 }
