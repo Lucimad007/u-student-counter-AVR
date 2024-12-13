@@ -1,3 +1,51 @@
+#include <avr/io.h>
+#include <util/delay.h>
+
+#define F_CPU 16000000UL // 16 MHz clock frequency
+#define BAUD 9600
+#define MYUBRR ((F_CPU / 16 / BAUD) - 1)
+
+void USART_init(unsigned int ubrr) {
+    UBRRL = (unsigned char)ubrr;
+    UBRRH = (unsigned char)(ubrr >> 8);
+    UCSRB = (1 << RXEN) | (1 << TXEN);
+    UCSRC = (1 << UCSZ1) | (1 << UCSZ0); // Set UCSZ1 and UCSZ0 for 8-bit data
+}
+
+void USART_Transmit(unsigned char data)
+{
+    while(!(UCSRA &(1<<UDRE)));
+    UDR = data; 
+}
+
+// ---- maybe adding SIZE parameter ---- //
+void UART_SendString(unsigned char *str)  
+{
+	unsigned char j=0;
+	
+	while (str[j]!=0)		/* Send string till null */
+	{
+		USART_Transmit(str[j]);	
+		j++;
+	}
+}
+
+
+void main(void) {
+
+    USART_init(MYUBRR); // Initialize USART with the correct baud rate
+    
+    while (1) {       
+        unsigned char str[] = "hello lucimad!\n";
+        PORTC |= 0b00000001;
+        _delay_ms(500);       
+        //UART_SendString(str); // Send character 'A' every 500 ms
+        UART_SendString(str);
+        PORTC &= 0b11111110;
+        _delay_ms(500);
+    }
+}
+
 // /*
 // 	ATmega 16 UART echo program
 // 	http://www.electronicwings.com
@@ -58,49 +106,3 @@
 // 	}	
 // }
 
-
-// written by TAs
-
-
-#include <avr/io.h>
-#include <util/delay.h>
-
-#define F_CPU 16000000UL // 16 MHz clock frequency
-#define BAUD 9600
-#define MYUBRR ((F_CPU / 16 / BAUD) - 1)
-
-void USART_init(unsigned int ubrr) {
-    UBRRL = (unsigned char)ubrr;
-    UBRRH = (unsigned char)(ubrr >> 8);
-    UCSRB = (1 << RXEN) | (1 << TXEN);
-    UCSRC = (1 << UCSZ1) | (1 << UCSZ0); // Set UCSZ1 and UCSZ0 for 8-bit data
-}
-
-void USART_Transmit(unsigned char data)
-{
-    while(!(UCSRA &(1<<UDRE)));
-    UDR = data; 
-}
-
-void UART_SendString(unsigned char *str)
-{
-	unsigned char j=0;
-	
-	while (str[j]!=0)		/* Send string till null */
-	{
-		USART_Transmit(str[j]);	
-		j++;
-	}
-}
-
-void main(void) {
-
-    USART_init(MYUBRR); // Initialize USART with the correct baud rate
-
-    while (1) {       
-        unsigned char str[] = "hello lucimad!\n";
-        _delay_ms(500);       
-        //UART_SendString(str); // Send character 'A' every 500 ms
-        UART_SendString(str);
-    }
-}
