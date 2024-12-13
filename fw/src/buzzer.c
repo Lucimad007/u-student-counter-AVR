@@ -8,11 +8,11 @@ void Buzzer_Init(void) {
 }
 
 void Buzzer_On(void) {
-	PORTB |= (1 << BUZZER_PIN); // Set BUZZER_PIN high
+	PORTB |= ~(1 << BUZZER_PIN); // Set BUZZER_PIN high
 }
 
 void Buzzer_Off(void) {
-	PORTB &= ~(1 << BUZZER_PIN); // Set BUZZER_PIN low
+	PORTB &= (1 << BUZZER_PIN); // Set BUZZER_PIN low
 }
 
 void Buzzer_Beep(void) {
