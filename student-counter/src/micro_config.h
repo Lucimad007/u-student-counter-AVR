@@ -9,5 +9,6 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <stdio.h>  //just for testing
+#include <string.h>
 
 #endif 

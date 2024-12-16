@@ -29,23 +29,44 @@ void handleTemperatureMonitor();
 void handleRetrieveStudentData();
 void handleTrafficMonitor();
 
-
-
-
+// LM35 Temperature sensor
+// also remember to connect both AVCC & AREF to the same VCC as the sensor
+void ADC_Init();
+int ADC_Read(char channel);
+// signed char didn't work even though its range is from -55 to 150s
+float toCelsius(int readADC);
 
 void main(void) {
 
     USART_init(MYUBRR); // Initialize USART with the correct baud rate
-    uint8 button;
-	DDRB = 0xFF;
-	PORTB = 0x00;
-	while (1) {
 
-		button = Keypad_getPressedKey();
-		if ((button >= 0) && (button <= 9))
-			PORTB = button;
-        _delay_ms(1000);
+    // test LM35 for temperature
+
+	ADC_Init();                 /* initialize ADC*/
+
+    DDRB = 0XFF;
+    PORTB = 0;
+	
+	while(1)
+	{
+	   PORTB = toCelsius(ADC_Read(7)); // 7 means PA7
+	   _delay_ms(1000);
 	}
+
+
+    //test keypad
+    // uint8 button;
+	// DDRB = 0xFF;
+	// PORTB = 0x00;
+	// while (1) {
+
+	// 	button = Keypad_getPressedKey();
+	// 	if ((button >= 0) && (button <= 9))
+	// 		PORTB = button;
+    //     _delay_ms(1000);
+	// }
+    
+    // state machine
     
     // while (1) {       
     //     unsigned char str[] = "hello lucimad!\n";
@@ -218,4 +239,33 @@ void UART_SendString(unsigned char *str)
 		USART_Transmit(str[j]);	
 		j++;
 	}
+}
+
+
+// LM35 Temperature sensor
+
+void ADC_Init()
+{										
+	DDRA = 0x00;	        /* Make ADC port as input */
+	ADCSRA = 0x87;          /* Enable ADC, with freq/128  */
+	ADMUX = 0x40;           /* Vref: Avcc, ADC channel: 0 */
+}
+
+// channel is the pin
+int ADC_Read(char channel)							
+{
+	ADMUX = 0x40 | (channel & 0x07);   /* set input channel to read */
+	ADCSRA |= (1<<ADSC);               /* Start ADC conversion */
+	while (!(ADCSRA & (1<<ADIF)));     /* Wait until end of conversion by polling ADC interrupt flag */
+	ADCSRA |= (1<<ADIF);               /* Clear interrupt flag */
+	_delay_ms(1);                      /* Wait a little bit */
+	return ADCW;                       /* Return ADC word */
+}
+
+float toCelsius(int readADC)
+{
+    float celsius;
+    celsius = (readADC*4.88); 
+	celsius = (celsius/10.00);
+    return celsius;
 }
