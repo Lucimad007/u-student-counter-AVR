@@ -1,10 +1,5 @@
-#include <stdio.h>  //just for testing
-#include <avr/io.h>
-#include <util/delay.h>
-
-#define F_CPU 16000000UL // 16 MHz clock frequency
-#define BAUD 9600
-#define MYUBRR ((F_CPU / 16 / BAUD) - 1)
+#include "micro_config.h"
+#include "keypad.h"
 
 typedef enum {
     STATE_MAIN_MENU,
@@ -41,81 +36,91 @@ void handleTrafficMonitor();
 void main(void) {
 
     USART_init(MYUBRR); // Initialize USART with the correct baud rate
+    uint8 button;
+	DDRB = 0xFF;
+	PORTB = 0x00;
+	while (1) {
+
+		button = Keypad_getPressedKey();
+		if ((button >= 0) && (button <= 9))
+			PORTB = button;
+        _delay_ms(1000);
+	}
     
-    while (1) {       
-        unsigned char str[] = "hello lucimad!\n";
-        PORTC |= 0b00000001;
-        _delay_ms(500);       
-        //UART_SendString(str); // Send character 'A' every 500 ms
-        UART_SendString(str);
-        PORTC &= 0b11111110;
-        _delay_ms(500);
-    }
+    // while (1) {       
+    //     unsigned char str[] = "hello lucimad!\n";
+    //     PORTC |= 0b00000001;
+    //     _delay_ms(500);       
+    //     //UART_SendString(str); // Send character 'A' every 500 ms
+    //     UART_SendString(str);
+    //     PORTC &= 0b11111110;
+    //     _delay_ms(500);
+    // }
 
-    int choice;
+    // int choice;
 
-    while (1) {
-        switch (currentState) {
-            case STATE_MAIN_MENU:
-                displayMainMenu();
-                scanf("%d", &choice);
-                switch (choice) {
-                    case 1:
-                        currentState = STATE_ATTENDANCE_INIT;
-                        break;
-                    case 2:
-                        currentState = STATE_STUDENT_MANAGEMENT;
-                        break;
-                    case 3:
-                        currentState = STATE_VIEW_PRESENT;
-                        break;
-                    case 4:
-                        currentState = STATE_TEMPERATURE_MONITOR;
-                        break;
-                    case 5:
-                        currentState = STATE_RETRIEVE_STUDENT_DATA;
-                        break;
-                    case 6:
-                        currentState = STATE_TRAFFIC_MONITOR;
-                        break;
-                    default:
-                        printf("Invalid choice. Try again.\n");
-                }
-                break;
+    // while (1) {
+    //     switch (currentState) {
+    //         case STATE_MAIN_MENU:
+    //             displayMainMenu();
+    //             scanf("%d", &choice);
+    //             switch (choice) {
+    //                 case 1:
+    //                     currentState = STATE_ATTENDANCE_INIT;
+    //                     break;
+    //                 case 2:
+    //                     currentState = STATE_STUDENT_MANAGEMENT;
+    //                     break;
+    //                 case 3:
+    //                     currentState = STATE_VIEW_PRESENT;
+    //                     break;
+    //                 case 4:
+    //                     currentState = STATE_TEMPERATURE_MONITOR;
+    //                     break;
+    //                 case 5:
+    //                     currentState = STATE_RETRIEVE_STUDENT_DATA;
+    //                     break;
+    //                 case 6:
+    //                     currentState = STATE_TRAFFIC_MONITOR;
+    //                     break;
+    //                 default:
+    //                     printf("Invalid choice. Try again.\n");
+    //             }
+    //             break;
 
-            case STATE_ATTENDANCE_INIT:
-                handleAttendanceInit();
-                currentState = STATE_MAIN_MENU;
-                break;
+    //         case STATE_ATTENDANCE_INIT:
+    //             handleAttendanceInit();
+    //             currentState = STATE_MAIN_MENU;
+    //             break;
 
-            case STATE_STUDENT_MANAGEMENT:
-                handleStudentManagement();
-                currentState = STATE_MAIN_MENU;
-                break;
+    //         case STATE_STUDENT_MANAGEMENT:
+    //             handleStudentManagement();
+    //             currentState = STATE_MAIN_MENU;
+    //             break;
 
-            case STATE_VIEW_PRESENT:
-                handleViewPresentStudents();
-                currentState = STATE_MAIN_MENU;
-                break;
+    //         case STATE_VIEW_PRESENT:
+    //             handleViewPresentStudents();
+    //             currentState = STATE_MAIN_MENU;
+    //             break;
 
-            case STATE_TEMPERATURE_MONITOR:
-                handleTemperatureMonitor();
-                currentState = STATE_MAIN_MENU;
-                break;
-            case STATE_RETRIEVE_STUDENT_DATA:
-                handleRetrieveStudentData();
-                currentState = STATE_MAIN_MENU;
-                break;
-            case STATE_TRAFFIC_MONITOR:
-                handleTrafficMonitor();
-                currentState = STATE_MAIN_MENU;
-                break;
+    //         case STATE_TEMPERATURE_MONITOR:
+    //             handleTemperatureMonitor();
+    //             currentState = STATE_MAIN_MENU;
+    //             break;
+    //         case STATE_RETRIEVE_STUDENT_DATA:
+    //             handleRetrieveStudentData();
+    //             currentState = STATE_MAIN_MENU;
+    //             break;
+    //         case STATE_TRAFFIC_MONITOR:
+    //             handleTrafficMonitor();
+    //             currentState = STATE_MAIN_MENU;
+    //             break;
 
-            default:
-                printf("Unknown state. Resetting to Main Menu.\n");
-                currentState = STATE_MAIN_MENU;
-        }
-    }
+    //         default:
+    //             printf("Unknown state. Resetting to Main Menu.\n");
+    //             currentState = STATE_MAIN_MENU;
+    //     }
+    // }
 }
 
 
