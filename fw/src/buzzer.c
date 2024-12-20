@@ -3,16 +3,16 @@
 #include "buzzer.h"
 
 void Buzzer_Init(void) {
-	DDRB |= (1 << BUZZER_PIN); // Set BUZZER_PIN as output
-	PORTB &= ~(1 << BUZZER_PIN); // Ensure the buzzer is off initially
+	BUZZER_PORT_DIR |= (1 << BUZZER_PIN); // Set BUZZER_PIN as output
+	BUZZER_PORT_OUT &= ~(1 << BUZZER_PIN); // Ensure the buzzer is off initially
 }
 
 void Buzzer_On(void) {
-	PORTB |= ~(1 << BUZZER_PIN); // Set BUZZER_PIN high
+	BUZZER_PORT_OUT |= ~(1 << BUZZER_PIN); // Set BUZZER_PIN high
 }
 
 void Buzzer_Off(void) {
-	PORTB &= (1 << BUZZER_PIN); // Set BUZZER_PIN low
+	BUZZER_PORT_OUT &= (1 << BUZZER_PIN); // Set BUZZER_PIN low
 }
 
 void Buzzer_Beep(void) {
