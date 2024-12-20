@@ -197,12 +197,6 @@
     <Compile Include="src\common_macros.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\eeprom.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\eeprom.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\keypad.c">
       <SubType>compile</SubType>
     </Compile>
@@ -225,6 +219,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\std_types.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\USART.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\USART.h">
       <SubType>compile</SubType>
     </Compile>
     <None Include="src\asf.h">

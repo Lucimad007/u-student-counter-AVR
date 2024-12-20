@@ -1,5 +1,9 @@
 #include "micro_config.h"
 #include "keypad.h"
+#include "lcd.h"
+#include "sensors.h"
+#include "buzzer.h"
+#include "USART.h"
 
 typedef enum {
     STATE_MAIN_MENU,
@@ -13,12 +17,6 @@ typedef enum {
 
 State currentState = STATE_MAIN_MENU;
 
-
-// USART protocol
-void USART_init(unsigned int ubrr);
-void USART_Transmit(unsigned char data);
-void UART_SendString(unsigned char *str);
-
 // state machine
 void displayMainMenu();
 void handleAttendanceInit();
@@ -29,12 +27,7 @@ void handleTemperatureMonitor();
 void handleRetrieveStudentData();
 void handleTrafficMonitor();
 
-// LM35 Temperature sensor
-// also remember to connect both AVCC & AREF to the same VCC as the sensor
-void ADC_Init();
-int ADC_Read(char channel);
-// signed char didn't work even though its range is from -55 to 150s
-float toCelsius(int readADC);
+
 
 void main(void) {
 
@@ -53,18 +46,6 @@ void main(void) {
 	   _delay_ms(1000);
 	}
 
-
-    //test keypad
-    // uint8 button;
-	// DDRB = 0xFF;
-	// PORTB = 0x00;
-	// while (1) {
-
-	// 	button = Keypad_getPressedKey();
-	// 	if ((button >= 0) && (button <= 9))
-	// 		PORTB = button;
-    //     _delay_ms(1000);
-	// }
     
     // state machine
     
@@ -208,64 +189,4 @@ void handleTrafficMonitor()
     printf("Monitoring Traffic...\n");
     // logic
     // Display data received from sonar
-}
-
-
-/** 
-    USART protocoll
-    UART is implemented here
-**/
-
-void USART_init(unsigned int ubrr) {
-    UBRRL = (unsigned char)ubrr;
-    UBRRH = (unsigned char)(ubrr >> 8);
-    UCSRB = (1 << RXEN) | (1 << TXEN);
-    UCSRC = (1 << UCSZ1) | (1 << UCSZ0); // Set UCSZ1 and UCSZ0 for 8-bit data
-}
-
-void USART_Transmit(unsigned char data)
-{
-    while(!(UCSRA &(1<<UDRE)));
-    UDR = data; 
-}
-
-// ---- maybe adding SIZE parameter ---- //
-void UART_SendString(unsigned char *str)  
-{
-	unsigned char j=0;
-	
-	while (str[j]!=0)		/* Send string till null */
-	{
-		USART_Transmit(str[j]);	
-		j++;
-	}
-}
-
-
-// LM35 Temperature sensor
-
-void ADC_Init()
-{										
-	DDRA = 0x00;	        /* Make ADC port as input */
-	ADCSRA = 0x87;          /* Enable ADC, with freq/128  */
-	ADMUX = 0x40;           /* Vref: Avcc, ADC channel: 0 */
-}
-
-// channel is the pin
-int ADC_Read(char channel)							
-{
-	ADMUX = 0x40 | (channel & 0x07);   /* set input channel to read */
-	ADCSRA |= (1<<ADSC);               /* Start ADC conversion */
-	while (!(ADCSRA & (1<<ADIF)));     /* Wait until end of conversion by polling ADC interrupt flag */
-	ADCSRA |= (1<<ADIF);               /* Clear interrupt flag */
-	_delay_ms(1);                      /* Wait a little bit */
-	return ADCW;                       /* Return ADC word */
-}
-
-float toCelsius(int readADC)
-{
-    float celsius;
-    celsius = (readADC*4.88); 
-	celsius = (celsius/10.00);
-    return celsius;
 }

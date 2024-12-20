@@ -1,9 +1,10 @@
+
 #ifndef USART_H
 #define USART_H
 
-void USART_Init(unsigned long baud_rate);
-void USART_Transmit(char data);
-char USART_Receive(void);
-void USART_Print(char *str);
+
+void USART_init(unsigned int ubrr);
+void USART_Transmit(unsigned char data);
+void UART_SendString(unsigned char *str);
 
 #endif

@@ -1,12 +1,8 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#define TRIG PD0  // Define Trigger pin as PORTD pin 0
-#define ECHO PD1  // Define Echo pin as PORTD pin 1
-
-void Sensors_Init(void);
-int Sensors_Read(void);
-int Read_Sonar(void);
-int Read_Temperature(void);
+void ADC_Init(void);
+int ADC_Read(char channel);
+float toCelsius(int readADC);
 
 #endif
