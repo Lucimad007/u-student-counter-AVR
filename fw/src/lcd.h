@@ -2,13 +2,13 @@
 #define LCD_H
 
 #include <avr/io.h>
-#define LCD_Data_Dir DDRD		/* Define LCD data port direction */
-#define LCD_Command_Dir DDRC		/* Define LCD command port direction register */
-#define LCD_Data_Port PORTD		/* Define LCD data port */
-#define LCD_Command_Port PORTC		/* Define LCD data port */
-#define RS PC0				/* Define Register Select (data/command reg.)pin */
-#define RW PC1				/* Define Read/Write signal pin */
-#define EN PC2				/* Define Enable signal pin */
+#define LCD_Data_Dir DDRC		/* Define LCD data port direction */
+#define LCD_Command_Dir DDRD		/* Define LCD command port direction register */
+#define LCD_Data_Port PORTC		/* Define LCD data port */
+#define LCD_Command_Port PORTD		/* Define LCD data port */
+#define RS PD0				/* Define Register Select (data/command reg.)pin */
+#define RW PD1				/* Define Read/Write signal pin */
+#define EN PD2				/* Define Enable signal pin */
 
 void LCD_Command(unsigned char cmnd);
 void LCD_Char (unsigned char char_data);	/* LCD data write function */
