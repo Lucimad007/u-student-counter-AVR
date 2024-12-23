@@ -6,6 +6,12 @@
 #include "USART.h"
 #include "ultrasonic.h"
 
+uint16 EEPROM_START_ADDRESS = 0;
+
+
+int StudentCount = 0;
+long int StudentCodes[100];
+
 typedef enum {
 	STATE_MAIN_MENU,
 	STATE_ATTENDANCE_INIT,
@@ -28,187 +34,20 @@ void handleTemperatureMonitor(void);
 void handleRetrieveStudentData(void);
 void handleTrafficMonitor(void);
 
-
-//
-//void main(void) {
-//
-//USART_init(MYUBRR); // Initialize USART with the correct baud rate
-//
-//// test LM35 for temperature
-//
-//ADC_Init();                 /* initialize ADC*/
-//
-//DDRB = 0XFF;
-//PORTB = 0;
-//
-//while(1)
-//{
-//PORTB = toCelsius(ADC_Read(7)); // 7 means PA7
-//_delay_ms(1000);
-//}
-//
-//
-//// state machine
-//
-//// while (1) {
-////     unsigned char str[] = "hello lucimad!\n";
-////     PORTC |= 0b00000001;
-////     _delay_ms(500);
-////     //UART_SendString(str); // Send character 'A' every 500 ms
-////     UART_SendString(str);
-////     PORTC &= 0b11111110;
-////     _delay_ms(500);
-//// }
-//
-//// int choice;
-//
-//// while (1) {
-////     switch (currentState) {
-////         case STATE_MAIN_MENU:
-////             displayMainMenu();
-////             scanf("%d", &choice);
-////             switch (choice) {
-////                 case 1:
-////                     currentState = STATE_ATTENDANCE_INIT;
-////                     break;
-////                 case 2:
-////                     currentState = STATE_STUDENT_MANAGEMENT;
-////                     break;
-////                 case 3:
-////                     currentState = STATE_VIEW_PRESENT;
-////                     break;
-////                 case 4:
-////                     currentState = STATE_TEMPERATURE_MONITOR;
-////                     break;
-////                 case 5:
-////                     currentState = STATE_RETRIEVE_STUDENT_DATA;
-////                     break;
-////                 case 6:
-////                     currentState = STATE_TRAFFIC_MONITOR;
-////                     break;
-////                 default:
-////                     printf("Invalid choice. Try again.\n");
-////             }
-////             break;
-//
-////         case STATE_ATTENDANCE_INIT:
-////             handleAttendanceInit();
-////             currentState = STATE_MAIN_MENU;
-////             break;
-//
-////         case STATE_STUDENT_MANAGEMENT:
-////             handleStudentManagement();
-////             currentState = STATE_MAIN_MENU;
-////             break;
-//
-////         case STATE_VIEW_PRESENT:
-////             handleViewPresentStudents();
-////             currentState = STATE_MAIN_MENU;
-////             break;
-//
-////         case STATE_TEMPERATURE_MONITOR:
-////             handleTemperatureMonitor();
-////             currentState = STATE_MAIN_MENU;
-////             break;
-////         case STATE_RETRIEVE_STUDENT_DATA:
-////             handleRetrieveStudentData();
-////             currentState = STATE_MAIN_MENU;
-////             break;
-////         case STATE_TRAFFIC_MONITOR:
-////             handleTrafficMonitor();
-////             currentState = STATE_MAIN_MENU;
-////             break;
-//
-////         default:
-////             printf("Unknown state. Resetting to Main Menu.\n");
-////             currentState = STATE_MAIN_MENU;
-////     }
-//// }
-//}
-//
-//
-
-//int main(void){
-//char Temperature[10];
-//float celsius;
-//keypad_init();
-//_delay_ms(100);
-//Buzzer_Init();
-//_delay_ms(100);
-//LCD_Init();
-//_delay_ms(100);
-//ADC_Init();
-//_delay_ms(100);
-//while(1)
-//{
-//Buzzer_Beep();
-//_delay_ms(1000);
-//
-//Buzzer_Success();
-//_delay_ms(1000);
-//
-//Buzzer_CriticalWarning();
-//_delay_ms(2000);
-//
-//LCD_String_xy(1,0,"Temperature");
-//celsius = (ADC_Read(0)*4.88);
-//celsius = (celsius/10.00);
-//sprintf(Temperature,"%d%cC  ", (int)celsius, degree_sysmbol);/* convert integer value to ASCII string */
-//LCD_String_xy(2,0,Temperature);/* send string data for printing */
-//_delay_ms(1000);
-//memset(Temperature,0,10);
-//}
-//}
-//
-
+void loadStudentCodesFromEEPROM(void);
+void saveStudentNumberInEEPROM(void);
+int CheckStudentNumberValidation(long int StudentNum);
 
 int main(void) {
-	uint16_t r; // Variable to store measured distance
-	char numberString[4];
-	// Initialize LCD and Ultrasonic sensor
-	LCD_Init();
-	HCSR04Init();
-
-	// Display a welcome message
-	LCD_Clear();
-	LCD_String("Ultrasonic Test");
-	_delay_ms(100);
-	LCD_Clear();
-
-	while (1) {
-		HCSR04Trigger(); // Send a trigger pulse to the ultrasonic sensor
-		r = GetPulseWidth(); // Get the pulse width and calculate distance
-		if(r==US_ERROR)                // if microcontroller doesn't get any pulse then it will set the US_ERROR variable to -1
-		// the following code will check if there is error then it will be displayed on the LCD screen
-		{
-			LCD_String_xy(1, 1,"Error!");      //lcd_setCursor(column, row)
-		}
-		else
-		{
-			distance=(r*0.034/2.0);	// This will give the distance in centimeters
-			//distance = r;
-			if (distance != previous_distance)    // the LCD screen only need to be cleared if the distance is changed otherwise it is not required
-			{
-				LCD_Clear();
-			}
-			
-			LCD_String_xy(1, 1,"distance= ");      // set the row and column to display the data
-			itoa(distance, numberString, sizeof(numberString));    // distance is an integer number, we can not display integer directly on the LCD. this line converts integer into array of character
-			LCD_String_xy(12, 1,numberString);      //lcd_setCursor(column, row)
-			LCD_String_xy(14, 1,"cm");      //set the row to 1 and and column to 14 to display the data
-			
-			previous_distance = distance;
-			_delay_ms(30);
-			
-		}
-
-		_delay_ms(500); // Delay before the next reading
+	
+	while (1)
+	{
 	}
-
 	return 0;
 }
 
-void displayMainMenu()
+
+void displayMainMenu(void)
 {
 	printf("1. Start Attendance\n");
 	printf("2. Manage Students\n");
@@ -218,44 +57,137 @@ void displayMainMenu()
 	// show on LCD
 }
 
-void handleAttendanceInit()
+void handleAttendanceInit(void)
 {
 	printf("Attendance Initialized. Waiting for student codes...\n");
 	// logic
 	// submut code or exit
 }
 
-void handleSubmitCode()
+void handleSubmitCode(void)
 {
-	printf("Submitting Student Code...\n");
-	// logic
-	// get error on LCD & buzzer sound if wrong length or format
+	char key;
+	long int tmpStudentCode=0,StudentCode=0;
+	LCD_Clear();
+	LCD_String_xy(0,0,NULL);
+	LCD_String("Enter Student Code:");
+	LCD_String_xy(1,0,NULL);
+	while (1)
+	{
+		key=scan_keypad();
+		if(key!='o'){
+			tmpStudentCode=tmpStudentCode*10 + (key-'0');
+			LCD_Char(key);
+		}
+		else{
+			break;
+		}
+	}
+	_delay_ms(200);
+	if(CheckStudentNumberValidation(tmpStudentCode)){
+		StudentCode=tmpStudentCode;
+		StudentCodes[StudentCount]=StudentCode;
+		StudentCount++;
+		LCD_Clear();
+		LCD_String_xy(0,0,NULL);
+		LCD_String("Student Code Accepted!");
+		return;
+	}
+	else{
+		LCD_Clear();
+		LCD_String_xy(0,0,NULL);
+		LCD_String("Student Code Not Accepted!");
+		Buzzer_Beep();
+		_delay_ms(200);
+		return;
+	}
 }
 
-void handleStudentManagement()
+void handleStudentManagement(void)
 {
-	printf("Managing Students...\n");
-	// logic
-	// search for presentation
+	char key;
+	long int StudentNumber=0;
+	LCD_Clear();
+	LCD_String("Enter Student Code:");
+	LCD_String_xy(1,0,NULL);
+	LCD_String("Student Number: ");
+	while(1){
+		key=scan_keypad();
+		if(key!='o'){
+			StudentNumber=StudentNumber*10 + (key-'0');
+			LCD_Char(key);
+		}
+		else{
+			break;
+		}
+	}
+	for(int i=0;i<StudentCount;i++){
+		if(StudentNumber==StudentCodes[i]){
+			LCD_Clear();
+			LCD_String("Student Found!");
+			_delay_ms(100);
+			return;
+		}
+	}
+	LCD_Clear();
+	LCD_String("Student Not Found!");
+	_delay_ms(100);
+	return;
 }
 
-void handleViewPresentStudents()
+void handleViewPresentStudents(void)
 {
-	printf("Viewing Present Students...\n");
-	// logic
-	// display number of present students
-	// then
-	// display names and shift the display
+	int Scroller=0;
+	char key;
+	LCD_Clear();
+	LCD_String_xy(0,0,NULL);
+	LCD_String("Present Students:");
+	LCD_Number(StudentCount);
+	_delay_ms(100);
+	LCD_Clear();
+	LCD_String_xy(0,0,NULL);
+	LCD_Number(StudentCodes[Scroller*2]);
+	LCD_String_xy(1,0,NULL);
+	LCD_Number(StudentCodes[Scroller*2+1]);
+	while(1){
+		key=scan_keypad();
+		if(key=='0'){
+			Scroller=(Scroller+1);
+		}
+		else if(key=='8'){
+			Scroller=(Scroller-1);
+		}
+		else if(key=='o'){
+			break;
+		}
+		LCD_Clear();
+		if(Scroller*2<=StudentCount){
+			LCD_String_xy(0,0,NULL);
+			LCD_Number(StudentCodes[Scroller*2]);
+			LCD_String_xy(1,0,NULL);
+			LCD_Number(StudentCodes[Scroller*2+1]);
+		}
+		else{
+			if(StudentCount%2==0){
+				continue;
+			}
+			else{
+				LCD_String_xy(0,0,NULL);
+				LCD_Number(StudentCodes[StudentCount-1]);
+			}
+		}
+
+	}
 }
 
-void handleTemperatureMonitor()
+void handleTemperatureMonitor(void)
 {
 	printf("Monitoring Temperature...\n");
 	// logic
 	// ADC and then displaying on LCD
 }
 
-void handleRetrieveStudentData()
+void handleRetrieveStudentData(void)
 {
 	printf("Retrievinng Student Data...\n");
 	// logic
@@ -263,9 +195,27 @@ void handleRetrieveStudentData()
 	// check success and failure and show on LCD
 }
 
-void handleTrafficMonitor()
+void handleTrafficMonitor(void)
 {
 	printf("Monitoring Traffic...\n");
 	// logic
 	// Display data received from sonar
+}
+
+void loadStudentCodesFromEEPROM(void) {
+	EEPROM_START_ADDRESS =0;
+	for (uint16_t i = 0; i < 100; i++) {
+		StudentCodes[i] = eeprom_read_dword((const uint32_t *)(EEPROM_START_ADDRESS + i * sizeof(long int)));
+	}
+}
+void saveStudentNumberInEEPROM(void){
+	for (uint16_t i = 0; i < 100; i++) {
+		eeprom_write_dword((uint32_t *)(EEPROM_START_ADDRESS + i * sizeof(long int)), StudentCodes[i]);
+	}
+}
+int CheckStudentNumberValidation(long int StudentNum){
+	if(StudentNum <= 40100000 || StudentNum >=  40200000)
+	return 0;
+	else
+	return 1;
 }

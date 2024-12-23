@@ -2,11 +2,11 @@
 #include "keypad.h"
 
 
-const char keypad[4][4] = {
-	{'7', '8', '9','/'},
-	{'4', '5', '6','*'},
-	{'1', '2', '3','-'},
-	{'o', '0', '=','+'}
+char keypad[4][3] = {
+	{'7', '8', '9'},
+	{'4', '5', '6'},
+	{'1', '2', '3'},
+	{'o', '0', '='}
 };
 
 // Function to convert an unsigned integer to a string representation
