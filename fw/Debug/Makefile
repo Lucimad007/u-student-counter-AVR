@@ -56,6 +56,7 @@ C_SRCS +=  \
 ../src/keypad.c \
 ../src/lcd.c \
 ../src/sensors.c \
+../src/ultrasonic.c \
 ../src/USART.c \
 ../src/ASF/mega/boards/stk600/rcx_x/init.c \
 ../src/main.c
@@ -72,6 +73,7 @@ src/buzzer.o \
 src/keypad.o \
 src/lcd.o \
 src/sensors.o \
+src/ultrasonic.o \
 src/USART.o \
 src/ASF/mega/boards/stk600/rcx_x/init.o \
 src/main.o
@@ -81,6 +83,7 @@ src/buzzer.o \
 src/keypad.o \
 src/lcd.o \
 src/sensors.o \
+src/ultrasonic.o \
 src/USART.o \
 src/ASF/mega/boards/stk600/rcx_x/init.o \
 src/main.o
@@ -90,6 +93,7 @@ src/buzzer.d \
 src/keypad.d \
 src/lcd.d \
 src/sensors.d \
+src/ultrasonic.d \
 src/USART.d \
 src/ASF/mega/boards/stk600/rcx_x/init.d \
 src/main.d
@@ -99,6 +103,7 @@ src/buzzer.d \
 src/keypad.d \
 src/lcd.d \
 src/sensors.d \
+src/ultrasonic.d \
 src/USART.d \
 src/ASF/mega/boards/stk600/rcx_x/init.d \
 src/main.d
@@ -117,6 +122,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

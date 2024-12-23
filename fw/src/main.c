@@ -129,93 +129,83 @@ void handleTrafficMonitor(void);
 //
 
 //int main(void){
-	//char Temperature[10];
-	//float celsius;
-	//keypad_init();
-	//_delay_ms(100);
-	//Buzzer_Init();
-	//_delay_ms(100);
-	//LCD_Init();
-	//_delay_ms(100);
-	//ADC_Init();
-	//_delay_ms(100);
-	//while(1)
-	//{
-		 //Buzzer_Beep();
-		 //_delay_ms(1000);
+//char Temperature[10];
+//float celsius;
+//keypad_init();
+//_delay_ms(100);
+//Buzzer_Init();
+//_delay_ms(100);
+//LCD_Init();
+//_delay_ms(100);
+//ADC_Init();
+//_delay_ms(100);
+//while(1)
+//{
+//Buzzer_Beep();
+//_delay_ms(1000);
 //
-		 //Buzzer_Success();
-		 //_delay_ms(1000);
+//Buzzer_Success();
+//_delay_ms(1000);
 //
-		 //Buzzer_CriticalWarning();
-		 //_delay_ms(2000);
-		 //
-		//LCD_String_xy(1,0,"Temperature");
-		//celsius = (ADC_Read(0)*4.88);
-		//celsius = (celsius/10.00);
-		//sprintf(Temperature,"%d%cC  ", (int)celsius, degree_sysmbol);/* convert integer value to ASCII string */
-		//LCD_String_xy(2,0,Temperature);/* send string data for printing */
-		//_delay_ms(1000);
-		//memset(Temperature,0,10);
-	//}
+//Buzzer_CriticalWarning();
+//_delay_ms(2000);
+//
+//LCD_String_xy(1,0,"Temperature");
+//celsius = (ADC_Read(0)*4.88);
+//celsius = (celsius/10.00);
+//sprintf(Temperature,"%d%cC  ", (int)celsius, degree_sysmbol);/* convert integer value to ASCII string */
+//LCD_String_xy(2,0,Temperature);/* send string data for printing */
+//_delay_ms(1000);
+//memset(Temperature,0,10);
+//}
 //}
 //
 
 
-int main(void)
-{
-	char string[10];
-	long count;
-	double distance;
-	
-	DDRA = 0x01;		/* Make trigger pin as output */
-	PORTD = 0xFF;		/* Turn on Pull-up */
-	
+int main(void) {
+	uint16_t r; // Variable to store measured distance
+	char numberString[4];
+	// Initialize LCD and Ultrasonic sensor
 	LCD_Init();
-	LCD_String_xy(1, 0, "Ultrasonic");
-	LCD_String("Hello");
-	_delay_ms(1000);
-	
-	sei();			/* Enable global interrupt */
-	TIMSK = (1 << TOIE1);	/* Enable Timer1 overflow interrupts */
-	TCCR1A = 0;		/* Set all bit to zero Normal operation */
+	HCSR04Init();
 
-	while(1)
-	{
-		/* Give 10us trigger pulse on trig. pin to HC-SR04 */
-		PORTA |= (1 << Trigger_pin);
-		_delay_us(10);
-		PORTA &= (~(1 << Trigger_pin));
-		
-		TCNT1 = 0;	/* Clear Timer counter */
-		TCCR1B = 0x41;	/* Capture on rising edge, No prescaler*/
-		TIFR = 1<<ICF1;	/* Clear ICP flag (Input Capture flag) */
-		TIFR = 1<<TOV1;	/* Clear Timer Overflow flag */
+	// Display a welcome message
+	LCD_Clear();
+	LCD_String("Ultrasonic Test");
+	_delay_ms(100);
+	LCD_Clear();
 
-		/*Calculate width of Echo by Input Capture (ICP) */
-		
-		while ((TIFR & (1 << ICF1)) == 0);/* Wait for rising edge */
-		TCNT1 = 0;	/* Clear Timer counter */
-		TCCR1B = 0x01;	/* Capture on falling edge, No prescaler */
-		TIFR = 1<<ICF1;	/* Clear ICP flag (Input Capture flag) */
-		TIFR = 1<<TOV1;	/* Clear Timer Overflow flag */
-		TimerOverflow = 0;/* Clear Timer overflow count */
+	while (1) {
+		HCSR04Trigger(); // Send a trigger pulse to the ultrasonic sensor
+		r = GetPulseWidth(); // Get the pulse width and calculate distance
+		if(r==US_ERROR)                // if microcontroller doesn't get any pulse then it will set the US_ERROR variable to -1
+		// the following code will check if there is error then it will be displayed on the LCD screen
+		{
+			LCD_String_xy(1, 1,"Error!");      //lcd_setCursor(column, row)
+		}
+		else
+		{
+			distance=(r*0.034/2.0);	// This will give the distance in centimeters
+			if (distance != previous_distance)    // the LCD screen only need to be cleared if the distance is changed otherwise it is not required
+			{
+				LCD_Clear();
+			}
+			
+			LCD_String_xy(1, 1,"Water lv = ");      // set the row and column to display the data
+			itoa(distance, numberString, 10);    // distance is an integer number, we can not display integer directly on the LCD. this line converts integer into array of character
+			LCD_String_xy(12, 1,numberString);      //lcd_setCursor(column, row)
+			LCD_String_xy(14, 1,"cm");      //set the row to 1 and and column to 14 to display the data
+			
+			previous_distance = distance;
+			_delay_ms(30);
+			
+		}
 
-		while ((TIFR & (1 << ICF1)) == 0);/* Wait for falling edge */
-		count = ICR1 + (65535 * TimerOverflow);	/* Take count */
-		/* 8MHz Timer freq, sound speed =343 m/s */
-		distance = (double)count / 466.47;
-
-		dtostrf(distance, 2, 2, string);/* distance to string */
-		strcat(string, " cm   ");	/* Concat unit i.e.cm */
-		LCD_String_xy(2, 0, "Dist = ");
-		LCD_String_xy(2, 7, string);	/* Print distance */
-		_delay_ms(200);
+		_delay_ms(500); // Delay before the next reading
 	}
+
+	return 0;
 }
-
-
-
 
 void displayMainMenu()
 {

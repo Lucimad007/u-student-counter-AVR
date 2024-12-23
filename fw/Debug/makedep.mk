@@ -10,6 +10,8 @@ src\lcd.c
 
 src\sensors.c
 
+src\ultrasonic.c
+
 src\USART.c
 
 src\ASF\mega\boards\stk600\rcx_x\init.c
