@@ -19,7 +19,8 @@ src/main.d src/main.o: ../src/main.c ../src/micro_config.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
  ../src/keypad.h ../src/std_types.h ../src/common_macros.h ../src/lcd.h \
- ../src/sensors.h ../src/buzzer.h ../src/USART.h
+ ../src/sensors.h ../src/buzzer.h ../src/USART.h ../src/ultrasonic.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h
 
 ../src/micro_config.h:
 
@@ -74,3 +75,7 @@ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 ../src/buzzer.h:
 
 ../src/USART.h:
+
+../src/ultrasonic.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h:

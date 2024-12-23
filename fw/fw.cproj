@@ -221,6 +221,9 @@
     <Compile Include="src\std_types.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\ultrasonic.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\USART.c">
       <SubType>compile</SubType>
     </Compile>
