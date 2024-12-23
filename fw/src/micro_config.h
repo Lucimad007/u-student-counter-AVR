@@ -10,5 +10,8 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
+#include <avr/eeprom.h>
+#include <string.h>
 
 #endif

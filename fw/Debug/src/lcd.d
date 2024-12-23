@@ -19,6 +19,7 @@ src/lcd.d src/lcd.o: ../src/lcd.c \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
  ../src/common_macros.h
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
@@ -66,5 +67,7 @@ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h:
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h:
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:
 
 ../src/common_macros.h:
