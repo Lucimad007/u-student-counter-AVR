@@ -186,13 +186,14 @@ int main(void) {
 		else
 		{
 			distance=(r*0.034/2.0);	// This will give the distance in centimeters
+			//distance = r;
 			if (distance != previous_distance)    // the LCD screen only need to be cleared if the distance is changed otherwise it is not required
 			{
 				LCD_Clear();
 			}
 			
-			LCD_String_xy(1, 1,"Water lv = ");      // set the row and column to display the data
-			itoa(distance, numberString, 10);    // distance is an integer number, we can not display integer directly on the LCD. this line converts integer into array of character
+			LCD_String_xy(1, 1,"distance= ");      // set the row and column to display the data
+			itoa(distance, numberString, sizeof(numberString));    // distance is an integer number, we can not display integer directly on the LCD. this line converts integer into array of character
 			LCD_String_xy(12, 1,numberString);      //lcd_setCursor(column, row)
 			LCD_String_xy(14, 1,"cm");      //set the row to 1 and and column to 14 to display the data
 			

@@ -5,11 +5,11 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .text         000005a4  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         0000015c  00800060  000005a4  00000638  2**0
+  1 .data         0000015a  00800060  000005a4  00000638  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000004  008001bc  008001bc  00000794  2**0
+  2 .bss          00000004  008001ba  008001ba  00000792  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000794  2**0
+  3 .comment      00000030  00000000  00000000  00000792  2**0
                   CONTENTS, READONLY
   4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000007c4  2**2
                   CONTENTS, READONLY
@@ -95,13 +95,13 @@ Disassembly of section .text:
   6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
   6c:	05 90       	lpm	r0, Z+
   6e:	0d 92       	st	X+, r0
-  70:	ac 3b       	cpi	r26, 0xBC	; 188
+  70:	aa 3b       	cpi	r26, 0xBA	; 186
   72:	b1 07       	cpc	r27, r17
   74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
 
 00000076 <__do_clear_bss>:
   76:	21 e0       	ldi	r18, 0x01	; 1
-  78:	ac eb       	ldi	r26, 0xBC	; 188
+  78:	aa eb       	ldi	r26, 0xBA	; 186
   7a:	b1 e0       	ldi	r27, 0x01	; 1
   7c:	01 c0       	rjmp	.+2      	; 0x80 <.do_clear_bss_start>
 
@@ -109,7 +109,7 @@ Disassembly of section .text:
   7e:	1d 92       	st	X+, r1
 
 00000080 <.do_clear_bss_start>:
-  80:	a0 3c       	cpi	r26, 0xC0	; 192
+  80:	ae 3b       	cpi	r26, 0xBE	; 190
   82:	b2 07       	cpc	r27, r18
   84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
   86:	c6 d0       	rcall	.+396    	; 0x214 <main>
@@ -526,10 +526,10 @@ int main(void) {
  270:	5f e3       	ldi	r21, 0x3F	; 63
  272:	00 d1       	rcall	.+512    	; 0x474 <__mulsf3>
  274:	40 d0       	rcall	.+128    	; 0x2f6 <__fixsfsi>
- 276:	70 93 bf 01 	sts	0x01BF, r23	; 0x8001bf <distance+0x1>
- 27a:	60 93 be 01 	sts	0x01BE, r22	; 0x8001be <distance>
- 27e:	20 91 bc 01 	lds	r18, 0x01BC	; 0x8001bc <__data_end>
- 282:	30 91 bd 01 	lds	r19, 0x01BD	; 0x8001bd <__data_end+0x1>
+ 276:	70 93 bd 01 	sts	0x01BD, r23	; 0x8001bd <distance+0x1>
+ 27a:	60 93 bc 01 	sts	0x01BC, r22	; 0x8001bc <distance>
+ 27e:	20 91 ba 01 	lds	r18, 0x01BA	; 0x8001ba <__data_end>
+ 282:	30 91 bb 01 	lds	r19, 0x01BB	; 0x8001bb <__data_end+0x1>
  286:	26 17       	cp	r18, r22
  288:	37 07       	cpc	r19, r23
  28a:	09 f0       	breq	.+2      	; 0x28e <main+0x7a>
@@ -539,12 +539,12 @@ int main(void) {
  292:	61 e0       	ldi	r22, 0x01	; 1
  294:	81 e0       	ldi	r24, 0x01	; 1
  296:	3c df       	rcall	.-392    	; 0x110 <LCD_String_xy>
- 298:	4a e0       	ldi	r20, 0x0A	; 10
+ 298:	44 e0       	ldi	r20, 0x04	; 4
  29a:	be 01       	movw	r22, r28
  29c:	6f 5f       	subi	r22, 0xFF	; 255
  29e:	7f 4f       	sbci	r23, 0xFF	; 255
- 2a0:	80 91 be 01 	lds	r24, 0x01BE	; 0x8001be <distance>
- 2a4:	90 91 bf 01 	lds	r25, 0x01BF	; 0x8001bf <distance+0x1>
+ 2a0:	80 91 bc 01 	lds	r24, 0x01BC	; 0x8001bc <distance>
+ 2a4:	90 91 bd 01 	lds	r25, 0x01BD	; 0x8001bd <distance+0x1>
  2a8:	48 d1       	rcall	.+656    	; 0x53a <__itoa_ncheck>
  2aa:	ae 01       	movw	r20, r28
  2ac:	4f 5f       	subi	r20, 0xFF	; 255
@@ -552,15 +552,15 @@ int main(void) {
  2b0:	61 e0       	ldi	r22, 0x01	; 1
  2b2:	8c e0       	ldi	r24, 0x0C	; 12
  2b4:	2d df       	rcall	.-422    	; 0x110 <LCD_String_xy>
- 2b6:	43 e8       	ldi	r20, 0x83	; 131
+ 2b6:	42 e8       	ldi	r20, 0x82	; 130
  2b8:	50 e0       	ldi	r21, 0x00	; 0
  2ba:	61 e0       	ldi	r22, 0x01	; 1
  2bc:	8e e0       	ldi	r24, 0x0E	; 14
  2be:	28 df       	rcall	.-432    	; 0x110 <LCD_String_xy>
- 2c0:	80 91 be 01 	lds	r24, 0x01BE	; 0x8001be <distance>
- 2c4:	90 91 bf 01 	lds	r25, 0x01BF	; 0x8001bf <distance+0x1>
- 2c8:	90 93 bd 01 	sts	0x01BD, r25	; 0x8001bd <__data_end+0x1>
- 2cc:	80 93 bc 01 	sts	0x01BC, r24	; 0x8001bc <__data_end>
+ 2c0:	80 91 bc 01 	lds	r24, 0x01BC	; 0x8001bc <distance>
+ 2c4:	90 91 bd 01 	lds	r25, 0x01BD	; 0x8001bd <distance+0x1>
+ 2c8:	90 93 bb 01 	sts	0x01BB, r25	; 0x8001bb <__data_end+0x1>
+ 2cc:	80 93 ba 01 	sts	0x01BA, r24	; 0x8001ba <__data_end>
  2d0:	8f ef       	ldi	r24, 0xFF	; 255
  2d2:	96 e7       	ldi	r25, 0x76	; 118
  2d4:	21 e0       	ldi	r18, 0x01	; 1
