@@ -1,7 +1,16 @@
-#ifndef KEYPAD_H
-#define KEYPAD_H
+#ifndef KEYPAD_H_
+#define KEYPAD_H_
 
-void Keypad_Init(void);
-unsigned char Keypad_GetKey(void);
+#include "std_types.h"
+#include "micro_config.h"
+#include "common_macros.h"
 
-#endif
+#define KEYPAD_PORT_OUT PORTB
+#define KEYPAD_PORT_IN  PINB
+#define KEYPAD_PORT_DIR DDRB
+
+void keypad_init(void);
+char scan_keypad(void);
+void num_to_string(unsigned int num, char* buffer);
+
+#endif /* KEYPAD_H_ */

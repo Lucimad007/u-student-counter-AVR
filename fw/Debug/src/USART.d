@@ -1,4 +1,4 @@
-src/eeprom.d src/eeprom.o: ../src/eeprom.c \
+src/USART.d src/USART.o: ../src/USART.c \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -10,7 +10,10 @@ src/eeprom.d src/eeprom.o: ../src/eeprom.c \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- ../src/eeprom.h
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
+ ../src/USART.h
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -34,4 +37,10 @@ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h:
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
-../src/eeprom.h:
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
+
+../src/USART.h:
