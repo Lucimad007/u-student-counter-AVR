@@ -22,10 +22,28 @@ typedef enum {
 	STATE_TRAFFIC_MONITOR
 } State;
 
+typedef enum{
+    ATTEND_READY,
+    SUBMIT_CODE,
+    NONE
+} AttendInitSubMenu;
+
+typedef enum{
+    FIRST_MENU,
+    SECOND_MENU,
+    THIRD_MENU
+} MenuNumber;
+
+// global variables
 State currentState = STATE_MAIN_MENU;
+MenuNumber menuNumber = FIRST_MENU;
+AttendInitSubMenu attendInitSubeMenu = NONE;
+int choice = 0;
 
 // state machine
-void displayMainMenu(void);
+void displayFirstMainMenu(void);
+void displaySecondMainMenu(void);
+void displayThirdMainMenu(void);
 void handleAttendanceInit(void);
 void handleSubmitCode(void);
 void handleStudentManagement(void);
@@ -40,41 +58,70 @@ int CheckStudentNumberValidation(long int StudentNum);
 
 int main(void) {
 	
-
-	int choice;
+    LCD_Init();
+    keypad_init();
+    displayFirstMainMenu();
 
     while (1) {
+        char ch = scan_keypad();
+        choice = ch - '0';
         switch (currentState) {
             case STATE_MAIN_MENU:
-                displayMainMenu();
-                scanf("%d", &choice);
-                switch (choice) {
-                    case 1:
-                        currentState = STATE_ATTENDANCE_INIT;
+                switch (menuNumber)
+                {
+                    case FIRST_MENU:
+                        displayFirstMainMenu();
+                        switch (choice)
+                        {
+                            case 1:
+                                currentState = STATE_ATTENDANCE_INIT;
+                                break;
+                            case 2:
+                                currentState = STATE_STUDENT_MANAGEMENT;
+                                break;
+                            case 9:
+                                menuNumber = SECOND_MENU;
+                                break;
+                        }
                         break;
-                    case 2:
-                        currentState = STATE_STUDENT_MANAGEMENT;
+                    case SECOND_MENU:
+                        displaySecondMainMenu();
+                        switch (choice)
+                        {
+                            case 3:
+                                currentState = STATE_VIEW_PRESENT;
+                                break;
+                            case 4:
+                                currentState = STATE_TEMPERATURE_MONITOR;
+                                break;
+                            case 7:
+                                menuNumber = FIRST_MENU;
+                                break;
+                            case 9:
+                                menuNumber = THIRD_MENU;
+                                break;
+                        }
                         break;
-                    case 3:
-                        currentState = STATE_VIEW_PRESENT;
+                    case THIRD_MENU:
+                        displayThirdMainMenu();
+                        switch (choice)
+                        {
+                        case 5:
+                            currentState = STATE_RETRIEVE_STUDENT_DATA;
+                            break;
+                        case 6:
+                            currentState = STATE_TRAFFIC_MONITOR;
+                            break;
+                        case 7:
+                            menuNumber = SECOND_MENU;
+                            break;
+                        }
                         break;
-                    case 4:
-                        currentState = STATE_TEMPERATURE_MONITOR;
-                        break;
-                    case 5:
-                        currentState = STATE_RETRIEVE_STUDENT_DATA;
-                        break;
-                    case 6:
-                        currentState = STATE_TRAFFIC_MONITOR;
-                        break;
-                    default:
-                        printf("Invalid choice. Try again.\n");
                 }
-                break;
+                
 
             case STATE_ATTENDANCE_INIT:
                 handleAttendanceInit();
-                currentState = STATE_MAIN_MENU;
                 break;
 
             case STATE_STUDENT_MANAGEMENT:
@@ -100,30 +147,60 @@ int main(void) {
                 currentState = STATE_MAIN_MENU;
                 break;
 
-            default:
-                printf("Unknown state. Resetting to Main Menu.\n");
-                currentState = STATE_MAIN_MENU;
+        
         }
     }
 	return 0;
 }
 
 
-void displayMainMenu(void)
+void displayFirstMainMenu(void)
 {
-	printf("1. Start Attendance\n");
-	printf("2. Manage Students\n");
-	printf("3. Monitor Temperature\n");
-	printf("4. Traffic Monitoring\n");
-	printf("Enter your choice: ");
-	// show on LCD
+    LCD_Clear();
+	LCD_String_xy(0,0, "1.Attend init");    // Attendance is too long
+	LCD_String_xy(1,0, "2.student mgmnt");
+}
+
+void displaySecondMainMenu(void)
+{
+    LCD_Clear();
+	LCD_String_xy(0,0, "3.View Presents");    
+	LCD_String_xy(1,0, "4.Temperature");
+}
+
+void displayThirdMainMenu(void)
+{
+    LCD_Clear();
+	LCD_String_xy(0,0, "5.student data");    
+	LCD_String_xy(1,0, "6.Trafic monitor"); // I know Traffic has 2 'f's but it is too long !
 }
 
 void handleAttendanceInit(void)
 {
-	printf("Attendance Initialized. Waiting for student codes...\n");
-	// logic
-	// submut code or exit
+	switch (attendInitSubeMenu)
+    {
+        case ATTEND_READY:
+            if(choice == 1)
+            {
+                attendInitSubeMenu = SUBMIT_CODE;
+                handleSubmitCode();
+            }
+            else if(choice == 2)
+            {
+                // exit
+                currentState = STATE_MAIN_MENU;
+                attendInitSubeMenu = NONE;
+                displayFirstMainMenu();
+            }
+            break;
+        case NONE:
+            LCD_Clear();
+            LCD_String_xy(0,0, "Attendance Ready");    
+            LCD_String_xy(1,0, "1.submit  2.exit"); 
+            if(choice == 1)
+                attendInitSubeMenu = ATTEND_READY;
+            break;
+        }
 }
 
 void handleSubmitCode(void)
@@ -132,7 +209,7 @@ void handleSubmitCode(void)
 	long int tmpStudentCode=0,StudentCode=0;
 	LCD_Clear();
 	LCD_String_xy(0,0,NULL);
-	LCD_String("Enter Student Code:");
+	LCD_String("Student Number:");
 	LCD_String_xy(1,0,NULL);
 	while (1)
 	{
@@ -151,14 +228,12 @@ void handleSubmitCode(void)
 		StudentCodes[StudentCount]=StudentCode;
 		StudentCount++;
 		LCD_Clear();
-		LCD_String_xy(0,0,NULL);
-		LCD_String("Student Code Accepted!");
+		LCD_String_xy(0,0,"Code Accepted!");
 		return;
 	}
 	else{
 		LCD_Clear();
-		LCD_String_xy(0,0,NULL);
-		LCD_String("Student Code Not Accepted!");
+		LCD_String_xy(0,0, "Not Accepted!");
 		Buzzer_Beep();
 		_delay_ms(200);
 		return;
