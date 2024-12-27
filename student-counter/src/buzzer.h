@@ -4,7 +4,10 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define BUZZER_PIN PB0
+#define BUZZER_PIN PA1
+#define BUZZER_PORT_OUT PORTA
+#define BUZZER_PORT_IN  PINA
+#define BUZZER_PORT_DIR DDRA
 
 void Buzzer_Init(void);
 void Buzzer_On(void);
