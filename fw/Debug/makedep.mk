@@ -4,13 +4,15 @@
 
 src\buzzer.c
 
-src\eeprom.c
-
 src\keypad.c
 
 src\lcd.c
 
 src\sensors.c
+
+src\ultrasonic.c
+
+src\USART.c
 
 src\ASF\mega\boards\stk600\rcx_x\init.c
 

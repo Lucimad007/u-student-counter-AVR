@@ -72,6 +72,5 @@ uint16_t GetPulseWidth()
 	return US_NO_OBSTACLE;	//No obstacle
 	else
 	return (result>>1);
-
 }
 

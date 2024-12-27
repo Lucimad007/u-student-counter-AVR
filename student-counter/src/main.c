@@ -1,11 +1,10 @@
 #include "micro_config.h"
+#include "std_types.h"
 #include "keypad.h"
 #include "lcd.h"
 #include "sensors.h"
 #include "buzzer.h"
 #include "usart.h"
-#include "ultrasonic.h"
-#include "std_types.h"
 
 uint16 EEPROM_START_ADDRESS = 0;
 
@@ -41,9 +40,71 @@ int CheckStudentNumberValidation(long int StudentNum);
 
 int main(void) {
 	
-	while (1)
-	{
-	}
+
+	int choice;
+
+    while (1) {
+        switch (currentState) {
+            case STATE_MAIN_MENU:
+                displayMainMenu();
+                scanf("%d", &choice);
+                switch (choice) {
+                    case 1:
+                        currentState = STATE_ATTENDANCE_INIT;
+                        break;
+                    case 2:
+                        currentState = STATE_STUDENT_MANAGEMENT;
+                        break;
+                    case 3:
+                        currentState = STATE_VIEW_PRESENT;
+                        break;
+                    case 4:
+                        currentState = STATE_TEMPERATURE_MONITOR;
+                        break;
+                    case 5:
+                        currentState = STATE_RETRIEVE_STUDENT_DATA;
+                        break;
+                    case 6:
+                        currentState = STATE_TRAFFIC_MONITOR;
+                        break;
+                    default:
+                        printf("Invalid choice. Try again.\n");
+                }
+                break;
+
+            case STATE_ATTENDANCE_INIT:
+                handleAttendanceInit();
+                currentState = STATE_MAIN_MENU;
+                break;
+
+            case STATE_STUDENT_MANAGEMENT:
+                handleStudentManagement();
+                currentState = STATE_MAIN_MENU;
+                break;
+
+            case STATE_VIEW_PRESENT:
+                handleViewPresentStudents();
+                currentState = STATE_MAIN_MENU;
+                break;
+
+            case STATE_TEMPERATURE_MONITOR:
+                handleTemperatureMonitor();
+                currentState = STATE_MAIN_MENU;
+                break;
+            case STATE_RETRIEVE_STUDENT_DATA:
+                handleRetrieveStudentData();
+                currentState = STATE_MAIN_MENU;
+                break;
+            case STATE_TRAFFIC_MONITOR:
+                handleTrafficMonitor();
+                currentState = STATE_MAIN_MENU;
+                break;
+
+            default:
+                printf("Unknown state. Resetting to Main Menu.\n");
+                currentState = STATE_MAIN_MENU;
+        }
+    }
 	return 0;
 }
 
@@ -220,3 +281,4 @@ int CheckStudentNumberValidation(long int StudentNum){
 	else
 	return 1;
 }
+

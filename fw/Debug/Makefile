@@ -53,10 +53,11 @@ SUBDIRS :=  \
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../src/buzzer.c \
-../src/eeprom.c \
 ../src/keypad.c \
 ../src/lcd.c \
 ../src/sensors.c \
+../src/ultrasonic.c \
+../src/USART.c \
 ../src/ASF/mega/boards/stk600/rcx_x/init.c \
 ../src/main.c
 
@@ -69,37 +70,41 @@ ASM_SRCS +=
 
 OBJS +=  \
 src/buzzer.o \
-src/eeprom.o \
 src/keypad.o \
 src/lcd.o \
 src/sensors.o \
+src/ultrasonic.o \
+src/USART.o \
 src/ASF/mega/boards/stk600/rcx_x/init.o \
 src/main.o
 
 OBJS_AS_ARGS +=  \
 src/buzzer.o \
-src/eeprom.o \
 src/keypad.o \
 src/lcd.o \
 src/sensors.o \
+src/ultrasonic.o \
+src/USART.o \
 src/ASF/mega/boards/stk600/rcx_x/init.o \
 src/main.o
 
 C_DEPS +=  \
 src/buzzer.d \
-src/eeprom.d \
 src/keypad.d \
 src/lcd.d \
 src/sensors.d \
+src/ultrasonic.d \
+src/USART.d \
 src/ASF/mega/boards/stk600/rcx_x/init.d \
 src/main.d
 
 C_DEPS_AS_ARGS +=  \
 src/buzzer.d \
-src/eeprom.d \
 src/keypad.d \
 src/lcd.d \
 src/sensors.d \
+src/ultrasonic.d \
+src/USART.d \
 src/ASF/mega/boards/stk600/rcx_x/init.d \
 src/main.d
 
@@ -117,6 +122,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
