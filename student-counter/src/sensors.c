@@ -3,24 +3,25 @@
 
 #include "sensors.h"
 
-int Read_Sonar(void) {
-	PORTD |= (1 << TRIG);
-	_delay_us(10);
-	PORTD &= ~(1 << TRIG);
-
-	while (!(PIND & (1 << ECHO)));
-	TCNT1 = 0;
-	TCCR1B |= (1 << CS11);
-
-	while (PIND & (1 << ECHO));
-	TCCR1B = 0;
-
-	return TCNT1 * 0.034 / 2;
+void ADC_Init(void){
+	DDRA = 0x00;	        /* Make ADC port as input */
+	ADCSRA = 0x87;          /* Enable ADC, with freq/128  */
+	ADMUX = 0x40;           /* Vref: Avcc, ADC channel: 0 */
 }
 
-int Read_Temperature(void) {
-	ADMUX = (1 << REFS0);
-	ADCSRA = (1 << ADEN) | (1 << ADSC);
-	while (ADCSRA & (1 << ADSC));
-	return ADCW;
+int ADC_Read(char channel)
+{
+	ADMUX = 0x40 | (channel & 0x07);   /* set input channel to read */
+	ADCSRA |= (1<<ADSC);               /* Start ADC conversion */
+	while (!(ADCSRA & (1<<ADIF)));     /* Wait until end of conversion by polling ADC interrupt flag */
+	ADCSRA |= (1<<ADIF);               /* Clear interrupt flag */
+	_delay_ms(1);                      /* Wait a little bit */
+	return ADCW;                       /* Return ADC word */
+}
+float toCelsius(int readADC)
+{
+	float celsius;
+	celsius = (readADC*4.88);
+	celsius = (celsius/10.00);
+	return celsius;
 }
