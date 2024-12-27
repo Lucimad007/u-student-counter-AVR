@@ -40,6 +40,9 @@ MenuNumber menuNumber = FIRST_MENU;
 AttendInitSubMenu attendInitSubeMenu = NONE;
 int choice = 0;
 
+
+void displayGuideMenu(void);
+
 // state machine
 void displayFirstMainMenu(void);
 void displaySecondMainMenu(void);
@@ -60,6 +63,8 @@ int main(void) {
 	
     LCD_Init();
     keypad_init();
+    displayGuideMenu();
+    scan_keypad();
     displayFirstMainMenu();
 
     while (1) {
@@ -151,6 +156,13 @@ int main(void) {
         }
     }
 	return 0;
+}
+
+void displayGuideMenu(void)
+{
+    LCD_Clear();
+    LCD_String_xy(0, 0, "7:=BACK  9:=NEXT");
+    LCD_String_xy(1, 0, "press any key...");
 }
 
 
