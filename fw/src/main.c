@@ -46,7 +46,6 @@ int main(void) {
 	return 0;
 }
 
-
 void displayMainMenu(void)
 {
 	printf("1. Start Attendance\n");
@@ -180,6 +179,7 @@ void handleViewPresentStudents(void)
 	}
 }
 
+//TODO
 void handleTemperatureMonitor(void)
 {
 	printf("Monitoring Temperature...\n");
@@ -187,6 +187,7 @@ void handleTemperatureMonitor(void)
 	// ADC and then displaying on LCD
 }
 
+//TODO
 void handleRetrieveStudentData(void)
 {
 	printf("Retrievinng Student Data...\n");
@@ -195,6 +196,7 @@ void handleRetrieveStudentData(void)
 	// check success and failure and show on LCD
 }
 
+//TODO
 void handleTrafficMonitor(void)
 {
 	printf("Monitoring Traffic...\n");
@@ -215,7 +217,7 @@ void saveStudentNumberInEEPROM(void){
 }
 int CheckStudentNumberValidation(long int StudentNum){
 	if(StudentNum <= 40100000 || StudentNum >=  40200000)
-	return 0;
+		return 0;
 	else
-	return 1;
+		return 1;
 }
