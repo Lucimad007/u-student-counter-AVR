@@ -58,9 +58,23 @@ void displayMainMenu(void)
 
 void handleAttendanceInit(void)
 {
-	printf("Attendance Initialized. Waiting for student codes...\n");
-	// logic
-	// submut code or exit
+	 char key;
+	 while(1){
+		 LCD_Clear();
+		 LCD_String_xy(0,0,NULL);
+		 LCD_String("1.Submit Student Code");
+		 LCD_String_xy(1,0,NULL);
+		 LCD_String("2.Exit");
+		 key=scan_keypad();
+		 if (key=='1')
+		 {
+			 handleStudentManagement();
+		 }
+		 else{
+			 handleStudentManagement();
+			 return;
+		 }
+	 }
 }
 
 void handleSubmitCode(void)

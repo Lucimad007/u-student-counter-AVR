@@ -540,15 +540,15 @@ Discarded input sections
  .data          0x00000000        0x0 src/main.o
  .bss           0x00000000        0x0 src/main.o
  .rodata.str1.1
-                0x00000000      0x174 src/main.o
+                0x00000000      0x15c src/main.o
  .text.displayMainMenu
                 0x00000000       0x32 src/main.o
- .text.handleAttendanceInit
-                0x00000000        0xa src/main.o
  .text.handleSubmitCode
                 0x00000000      0x12c src/main.o
  .text.handleStudentManagement
                 0x00000000      0x112 src/main.o
+ .text.handleAttendanceInit
+                0x00000000       0x40 src/main.o
  .text.handleViewPresentStudents
                 0x00000000      0x124 src/main.o
  .text.handleTemperatureMonitor
@@ -1192,20 +1192,20 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xe62
+.debug_info     0x00000000      0xef9
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x4e6 W:/7.0/Packs/atmel/ATmega_DFP/1.2.132/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_info    0x000004e6      0x97c src/main.o
+ .debug_info    0x000004e6      0xa13 src/main.o
 
 .debug_abbrev   0x00000000      0x692
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x4a3 W:/7.0/Packs/atmel/ATmega_DFP/1.2.132/gcc/dev/atmega32/avr5/crtatmega32.o
  .debug_abbrev  0x000004a3      0x1ef src/main.o
 
-.debug_line     0x00000000      0x70f
+.debug_line     0x00000000      0x745
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x115 W:/7.0/Packs/atmel/ATmega_DFP/1.2.132/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_line    0x00000115      0x5fa src/main.o
+ .debug_line    0x00000115      0x630 src/main.o
 
 .debug_frame    0x00000000      0x168
  *(.debug_frame)
@@ -1217,9 +1217,9 @@ END GROUP
  .debug_str     0x00000196     0x740f src/main.o
                                0x75f9 (size before relaxing)
 
-.debug_loc      0x00000000      0x4fb
+.debug_loc      0x00000000      0x519
  *(.debug_loc)
- .debug_loc     0x00000000      0x4fb src/main.o
+ .debug_loc     0x00000000      0x519 src/main.o
 
 .debug_macinfo
  *(.debug_macinfo)
