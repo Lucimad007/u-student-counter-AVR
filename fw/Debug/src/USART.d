@@ -13,7 +13,13 @@ src/USART.d src/USART.o: ../src/USART.c \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
- ../src/USART.h
+ ../src/USART.h ../src/lcd.h ../src/micro_config.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -44,3 +50,19 @@ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
 
 ../src/USART.h:
+
+../src/lcd.h:
+
+../src/micro_config.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:
