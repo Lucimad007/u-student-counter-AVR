@@ -545,7 +545,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x100 src/ASF/mega/boards/stk600/rcx_x/init.o
  .debug_macro   0x00000000      0x2c0 src/ASF/mega/boards/stk600/rcx_x/init.o
  .debug_line    0x00000000      0x2da src/ASF/mega/boards/stk600/rcx_x/init.o
- .debug_str     0x00000000     0xe686 src/ASF/mega/boards/stk600/rcx_x/init.o
+ .debug_str     0x00000000     0xe698 src/ASF/mega/boards/stk600/rcx_x/init.o
  .comment       0x00000000       0x31 src/ASF/mega/boards/stk600/rcx_x/init.o
  .debug_frame   0x00000000       0x24 src/ASF/mega/boards/stk600/rcx_x/init.o
  .group         0x00000000        0x8 src/main.o
@@ -1322,10 +1322,10 @@ END GROUP
  .debug_abbrev  0x00000000      0x4a3 W:/7.0/Packs/atmel/ATmega_DFP/1.2.132/gcc/dev/atmega32/avr5/crtatmega32.o
  .debug_abbrev  0x000004a3      0x294 src/main.o
 
-.debug_line     0x00000000      0x87a
+.debug_line     0x00000000      0x87b
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x115 W:/7.0/Packs/atmel/ATmega_DFP/1.2.132/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_line    0x00000115      0x765 src/main.o
+ .debug_line    0x00000115      0x766 src/main.o
 
 .debug_frame    0x00000000      0x18c
  *(.debug_frame)
