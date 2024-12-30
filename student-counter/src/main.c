@@ -60,6 +60,14 @@ void saveStudentNumberInEEPROM(void);
 int CheckStudentNumberValidation(long int StudentNum);
 
 int main(void) {
+	USART_init(MYUBRR);
+
+	while (1) {       
+        unsigned char x[15] = "doroste bemola ";     
+        _delay_ms(500);       
+        UART_SendString(x); // Send character 'A' every 500 ms
+    }
+		
 	
     LCD_Init();
     keypad_init();
