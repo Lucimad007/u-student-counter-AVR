@@ -301,7 +301,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 src/lcd.o
  .debug_macro   0x00000000       0x16 src/lcd.o
  .debug_line    0x00000000      0x409 src/lcd.o
- .debug_str     0x00000000     0x7141 src/lcd.o
+ .debug_str     0x00000000     0x7142 src/lcd.o
  .comment       0x00000000       0x31 src/lcd.o
  .debug_frame   0x00000000       0xac src/lcd.o
  .group         0x00000000        0x8 src/sensors.o
@@ -480,7 +480,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xf6 src/USART.o
  .debug_macro   0x00000000       0x33 src/USART.o
  .debug_line    0x00000000      0x3ff src/USART.o
- .debug_str     0x00000000     0x6f99 src/USART.o
+ .debug_str     0x00000000     0x6f9a src/USART.o
  .comment       0x00000000       0x31 src/USART.o
  .debug_frame   0x00000000      0x108 src/USART.o
  .group         0x00000000        0x8 src/ASF/mega/boards/stk600/rcx_x/init.o
@@ -1331,11 +1331,11 @@ END GROUP
  *(.debug_frame)
  .debug_frame   0x00000000      0x18c src/main.o
 
-.debug_str      0x00000000     0x7624
+.debug_str      0x00000000     0x7625
  *(.debug_str)
  .debug_str     0x00000000      0x196 W:/7.0/Packs/atmel/ATmega_DFP/1.2.132/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_str     0x00000196     0x748e src/main.o
-                               0x767f (size before relaxing)
+ .debug_str     0x00000196     0x748f src/main.o
+                               0x7680 (size before relaxing)
 
 .debug_loc      0x00000000      0x8ab
  *(.debug_loc)

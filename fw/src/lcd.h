@@ -6,9 +6,9 @@
 #define LCD_Command_Dir DDRD		/* Define LCD command port direction register */
 #define LCD_Data_Port PORTC		/* Define LCD data port */
 #define LCD_Command_Port PORTD		/* Define LCD data port */
-#define RS PD0				/* Define Register Select (data/command reg.)pin */
-#define RW PD1				/* Define Read/Write signal pin */
-#define EN PD2				/* Define Enable signal pin */
+#define RS PD5				/* Define Register Select (data/command reg.)pin */
+#define RW PD6				/* Define Read/Write signal pin */
+#define EN PD7				/* Define Enable signal pin */
 
 void LCD_Command(unsigned char cmnd);
 void LCD_Char (unsigned char char_data);	/* LCD data write function */

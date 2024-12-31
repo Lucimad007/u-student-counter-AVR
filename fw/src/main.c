@@ -41,9 +41,9 @@ void saveStudentNumberInEEPROM(void);
 int CheckStudentNumberValidation(long int StudentNum);
 
 int main(void) {
-	
 	while (1)
 	{
+		
 	}
 	return 0;
 }
