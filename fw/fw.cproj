@@ -197,6 +197,12 @@
     <Compile Include="src\common_macros.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\glcd.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\glcd.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\keypad.c">
       <SubType>compile</SubType>
     </Compile>
