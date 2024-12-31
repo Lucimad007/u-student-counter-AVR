@@ -1,7 +1,4 @@
-src/ASF/mega/boards/stk600/rcx_x/init.d \
- src/ASF/mega/boards/stk600/rcx_x/init.o: \
- ../src/ASF/mega/boards/stk600/rcx_x/init.c \
- ../src/ASF/common/boards/board.h ../src/ASF/mega/utils/compiler.h \
+src/glcd.d src/glcd.o: ../src/glcd.c ../src/glcd.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -13,19 +10,15 @@ src/ASF/mega/boards/stk600/rcx_x/init.d \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h \
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
- w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
- ../src/ASF/common/utils/parts.h ../src/ASF/common/utils/interrupt.h \
- ../src/ASF/common/utils/interrupt/interrupt_avr8.h \
- w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
- ../src/ASF/mega/utils/progmem.h \
- w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\pgmspace.h \
- ../src/config/conf_board.h
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\pgmspace.h
 
-../src/ASF/common/boards/board.h:
-
-../src/ASF/mega/utils/compiler.h:
+../src/glcd.h:
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -49,22 +42,16 @@ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h:
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
-w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdbool.h:
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h:
+
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h:
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h:
 
-w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h:
-
-../src/ASF/common/utils/parts.h:
-
-../src/ASF/common/utils/interrupt.h:
-
-../src/ASF/common/utils/interrupt/interrupt_avr8.h:
-
-w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
-
-../src/ASF/mega/utils/progmem.h:
-
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\pgmspace.h:
-
-../src/config/conf_board.h:
