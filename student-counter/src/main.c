@@ -106,9 +106,11 @@ int main(void) {
                         {
                             case 3:
                                 currentState = STATE_VIEW_PRESENT;
+								handleViewPresentStudents();
                                 break;
                             case 4:
                                 currentState = STATE_TEMPERATURE_MONITOR;
+								handleTemperatureMonitor();
                                 break;
                             case 7:
                                 menuNumber = FIRST_MENU;
@@ -156,17 +158,18 @@ int main(void) {
                 break;
 
             case STATE_STUDENT_MANAGEMENT:
-
+				currentState = STATE_MAIN_MENU;
                 break;
 
-            case STATE_VIEW_PRESENT:
-                handleViewPresentStudents();
+            case STATE_VIEW_PRESENT:	
+				// pressing any key is ok
                 currentState = STATE_MAIN_MENU;
+				displayFirstMainMenu();
                 break;
 
             case STATE_TEMPERATURE_MONITOR:
-                handleTemperatureMonitor();
                 currentState = STATE_MAIN_MENU;
+				displayFirstMainMenu();
                 break;
             case STATE_RETRIEVE_STUDENT_DATA:
                 handleRetrieveStudentData();
@@ -324,7 +327,7 @@ void handleViewPresentStudents(void)
 	char key;
 	LCD_Clear();
 	LCD_String_xy(0,0,NULL);
-	LCD_String("Present Students:");
+	LCD_String("Present Students");
 	LCD_Number(StudentCount);
 	_delay_ms(100);
 	LCD_Clear();
@@ -333,12 +336,17 @@ void handleViewPresentStudents(void)
 	LCD_String_xy(1,0,NULL);
 	LCD_Number(StudentCodes[Scroller*2+1]);
 	while(1){
+		if(StudentCount == 0)
+		{
+			LCD_String_xy(1,0, "No Students.");
+			break;
+		}
 		key=scan_keypad();
 		if(key=='0'){
-			Scroller=(Scroller+1);
+			Scroller=(Scroller+1) >= StudentCount ? 0 : (Scroller+1);
 		}
 		else if(key=='8'){
-			Scroller=(Scroller-1);
+			Scroller=(Scroller-1) < 0 ? 0 : (Scroller-1);
 		}
 		else if(key=='o'){
 			break;
@@ -365,9 +373,27 @@ void handleViewPresentStudents(void)
 
 void handleTemperatureMonitor(void)
 {
-	printf("Monitoring Temperature...\n");
-	// logic
-	// ADC and then displaying on LCD
+	char Temperature[10];
+	float celsius;
+	_delay_ms(100);
+	Buzzer_Init();
+	_delay_ms(100);
+	LCD_Init();
+	_delay_ms(100);
+	ADC_Init();
+	_delay_ms(100);
+	while(1)
+	{
+		Buzzer_Beep();
+		_delay_ms(1000);
+		LCD_String_xy(0,0,"Temperature");
+		celsius = (ADC_Read(0)*4.88);
+		celsius = (celsius/10.00);
+		sprintf(Temperature,"%d%cC  ", (int)celsius, degree_sysmbol);/* convert integer value to ASCII string */
+		LCD_String_xy(1,0,Temperature);/* send string data for printing */
+		_delay_ms(1000);
+		memset(Temperature,0,10);
+	}
 }
 
 void handleRetrieveStudentData(void)
