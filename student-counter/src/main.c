@@ -38,15 +38,20 @@ typedef enum{
 State currentState = STATE_MAIN_MENU;
 MenuNumber menuNumber = FIRST_MENU;
 AttendInitSubMenu attendInitSubeMenu = NONE;
-int choice = 0;
+int choice = '0';
 
 
+           
+
+// display menus
 void displayGuideMenu(void);
-
-// state machine
 void displayFirstMainMenu(void);
 void displaySecondMainMenu(void);
 void displayThirdMainMenu(void);
+void displayAttendInitMenu(void);
+void displayStudentManagementMenu(void);
+
+// state machine
 void handleAttendanceInit(void);
 void handleSubmitCode(void);
 void handleStudentManagement(void);
@@ -61,18 +66,11 @@ int CheckStudentNumberValidation(long int StudentNum);
 
 int main(void) {
 	USART_init(MYUBRR);
-
-	while (1) {       
-        unsigned char x[15] = "doroste bemola ";     
-        _delay_ms(500);       
-        UART_SendString(x); // Send character 'A' every 500 ms
-    }
-		
 	
     LCD_Init();
     keypad_init();
     displayGuideMenu();
-    scan_keypad();
+	scan_keypad();
     displayFirstMainMenu();
 
     while (1) {
@@ -83,22 +81,23 @@ int main(void) {
                 switch (menuNumber)
                 {
                     case FIRST_MENU:
-                        displayFirstMainMenu();
                         switch (choice)
                         {
                             case 1:
                                 currentState = STATE_ATTENDANCE_INIT;
+								displayAttendInitMenu();
                                 break;
                             case 2:
                                 currentState = STATE_STUDENT_MANAGEMENT;
+								displayStudentManagementMenu();
                                 break;
                             case 9:
                                 menuNumber = SECOND_MENU;
+								displaySecondMainMenu();
                                 break;
                         }
                         break;
                     case SECOND_MENU:
-                        displaySecondMainMenu();
                         switch (choice)
                         {
                             case 3:
@@ -109,14 +108,15 @@ int main(void) {
                                 break;
                             case 7:
                                 menuNumber = FIRST_MENU;
+								displayFirstMainMenu();
                                 break;
                             case 9:
                                 menuNumber = THIRD_MENU;
+								displayThirdMainMenu();
                                 break;
                         }
                         break;
                     case THIRD_MENU:
-                        displayThirdMainMenu();
                         switch (choice)
                         {
                         case 5:
@@ -127,14 +127,28 @@ int main(void) {
                             break;
                         case 7:
                             menuNumber = SECOND_MENU;
+							displaySecondMainMenu();
                             break;
                         }
                         break;
                 }
+				break;
                 
 
             case STATE_ATTENDANCE_INIT:
-                handleAttendanceInit();
+                switch (choice)
+                {
+                	case 1:
+						handleSubmitCode();
+                        currentState = STATE_ATTENDANCE_INIT;	// just to explicitly show it
+						displayAttendInitMenu();
+                        break;
+                    case 2:
+                        currentState = STATE_MAIN_MENU;
+						menuNumber = FIRST_MENU;
+						displayFirstMainMenu();
+                        break;
+                }
                 break;
 
             case STATE_STUDENT_MANAGEMENT:
@@ -195,6 +209,21 @@ void displayThirdMainMenu(void)
 	LCD_String_xy(1,0, "6.Trafic monitor"); // I know Traffic has 2 'f's but it is too long !
 }
 
+void displayAttendInitMenu(void)
+{
+	LCD_Clear();
+    LCD_String_xy(0,0, "Attendance Ready");    
+    LCD_String_xy(1,0, "1.submit  2.exit"); 
+}
+
+void displayStudentManagementMenu(void)
+{
+	LCD_Clear();
+	LCD_String("Enter Student Code:");
+	LCD_String_xy(1,0,NULL);
+	LCD_String("Student Number: ");
+}
+
 void handleAttendanceInit(void)
 {
 	switch (attendInitSubeMenu)
@@ -202,8 +231,10 @@ void handleAttendanceInit(void)
         case ATTEND_READY:
             if(choice == 1)
             {
-                attendInitSubeMenu = SUBMIT_CODE;
                 handleSubmitCode();
+				currentState = STATE_MAIN_MENU;
+                attendInitSubeMenu = NONE;
+                displayFirstMainMenu();
             }
             else if(choice == 2)
             {
@@ -214,9 +245,6 @@ void handleAttendanceInit(void)
             }
             break;
         case NONE:
-            LCD_Clear();
-            LCD_String_xy(0,0, "Attendance Ready");    
-            LCD_String_xy(1,0, "1.submit  2.exit"); 
             if(choice == 1)
                 attendInitSubeMenu = ATTEND_READY;
             break;
@@ -249,14 +277,13 @@ void handleSubmitCode(void)
 		StudentCount++;
 		LCD_Clear();
 		LCD_String_xy(0,0,"Code Accepted!");
-		return;
+		_delay_ms(1000);
 	}
 	else{
 		LCD_Clear();
 		LCD_String_xy(0,0, "Not Accepted!");
-		Buzzer_Beep();
-		_delay_ms(200);
-		return;
+		//Buzzer_Beep();
+		_delay_ms(1000);
 	}
 }
 
@@ -264,10 +291,6 @@ void handleStudentManagement(void)
 {
 	char key;
 	long int StudentNumber=0;
-	LCD_Clear();
-	LCD_String("Enter Student Code:");
-	LCD_String_xy(1,0,NULL);
-	LCD_String("Student Number: ");
 	while(1){
 		key=scan_keypad();
 		if(key!='o'){
