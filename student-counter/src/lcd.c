@@ -43,6 +43,8 @@ void LCD_Init (void)			/* LCD Initialize function */
 
 void LCD_String (char *str)		/* Send string to LCD function */
 {
+	if(str == NULL)
+		return;
 	int i;
 	for(i=0;str[i]!=0;i++)		/* Send each char of string till the NULL */
 	{

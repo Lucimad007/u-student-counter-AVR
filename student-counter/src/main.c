@@ -90,6 +90,10 @@ int main(void) {
                             case 2:
                                 currentState = STATE_STUDENT_MANAGEMENT;
 								displayStudentManagementMenu();
+								handleStudentManagement();
+								currentState = STATE_MAIN_MENU;
+								menuNumber = FIRST_MENU;
+								displayFirstMainMenu();
                                 break;
                             case 9:
                                 menuNumber = SECOND_MENU;
@@ -152,8 +156,7 @@ int main(void) {
                 break;
 
             case STATE_STUDENT_MANAGEMENT:
-                handleStudentManagement();
-                currentState = STATE_MAIN_MENU;
+
                 break;
 
             case STATE_VIEW_PRESENT:
@@ -219,9 +222,7 @@ void displayAttendInitMenu(void)
 void displayStudentManagementMenu(void)
 {
 	LCD_Clear();
-	LCD_String("Enter Student Code:");
-	LCD_String_xy(1,0,NULL);
-	LCD_String("Student Number: ");
+	LCD_String_xy(0,0, "Search Student:");
 }
 
 void handleAttendanceInit(void)
@@ -291,6 +292,7 @@ void handleStudentManagement(void)
 {
 	char key;
 	long int StudentNumber=0;
+	LCD_String_xy(1, 0, NULL);
 	while(1){
 		key=scan_keypad();
 		if(key!='o'){
@@ -305,13 +307,14 @@ void handleStudentManagement(void)
 		if(StudentNumber==StudentCodes[i]){
 			LCD_Clear();
 			LCD_String("Student Found!");
-			_delay_ms(100);
+			_delay_ms(1000);
 			return;
 		}
 	}
 	LCD_Clear();
-	LCD_String("Student Not Found!");
-	_delay_ms(100);
+	LCD_String_xy(0, 0, "Student");
+	LCD_String_xy(1, 0, "Not Found!");
+	_delay_ms(1000);
 	return;
 }
 
