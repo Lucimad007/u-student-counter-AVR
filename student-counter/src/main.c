@@ -5,6 +5,7 @@
 #include "sensors.h"
 #include "buzzer.h"
 #include "usart.h"
+#include "ultrasonic.h"
 
 uint16 EEPROM_START_ADDRESS = 0;
 
@@ -66,6 +67,7 @@ int CheckStudentNumberValidation(long int StudentNum);
 
 int main(void) {
 	USART_init(MYUBRR);
+	HCSR04Init();
 	
     LCD_Init();
     keypad_init();
@@ -130,6 +132,7 @@ int main(void) {
                             break;
                         case 6:
                             currentState = STATE_TRAFFIC_MONITOR;
+							handleTrafficMonitor();
                             break;
                         case 7:
                             menuNumber = SECOND_MENU;
@@ -172,12 +175,12 @@ int main(void) {
 				displayFirstMainMenu();
                 break;
             case STATE_RETRIEVE_STUDENT_DATA:
-                handleRetrieveStudentData();
                 currentState = STATE_MAIN_MENU;
+				displayFirstMainMenu();
                 break;
             case STATE_TRAFFIC_MONITOR:
-                handleTrafficMonitor();
                 currentState = STATE_MAIN_MENU;
+				displayFirstMainMenu();
                 break;
 
         
@@ -286,7 +289,7 @@ void handleSubmitCode(void)
 	else{
 		LCD_Clear();
 		LCD_String_xy(0,0, "Not Accepted!");
-		//Buzzer_Beep();
+		Buzzer_Beep();
 		_delay_ms(1000);
 	}
 }
@@ -406,9 +409,40 @@ void handleRetrieveStudentData(void)
 
 void handleTrafficMonitor(void)
 {
-	printf("Monitoring Traffic...\n");
-	// logic
-	// Display data received from sonar
+	uint16_t pulseWidth;
+	int distance;
+	uint8 count = -1, prev_count = -1;
+	LCD_String_xy(0, 0, "Count: 0");
+	while(1){
+		_delay_ms(100);
+		HCSR04Trigger();
+		pulseWidth = GetPulseWidth();
+		if(pulseWidth==US_ERROR){
+			LCD_Clear();
+			LCD_String("Error: Echo timeout");
+			_delay_ms(300);
+		}
+		else if(pulseWidth ==US_NO_OBSTACLE){
+			LCD_Clear();
+			LCD_String("No Obstacle Detected");
+			_delay_ms(300);
+		}
+		else{
+			distance = (int)((pulseWidth * 0.034 / 2) + 0.5);
+			if (distance < 6) {
+                count++;  // Increment count if distance is below threshold
+            }
+
+            // Update count on LCD only if it changes
+            if (count != prev_count) {
+                prev_count = count;
+				char buff[16];
+                sprintf(buff, "Count: %d", count);
+				LCD_Clear();
+                LCD_String_xy(0, 0, buff); 
+            }
+		}
+	}
 }
 
 void loadStudentCodesFromEEPROM(void) {
