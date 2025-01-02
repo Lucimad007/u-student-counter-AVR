@@ -4,6 +4,8 @@
 
 src\buzzer.c
 
+src\glcd.c
+
 src\keypad.c
 
 src\lcd.c

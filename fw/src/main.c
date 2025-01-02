@@ -6,6 +6,8 @@
 #include "USART.h"
 #include "ultrasonic.h"
 
+
+
 uint16 EEPROM_START_ADDRESS = 0;
 
 
@@ -39,13 +41,12 @@ void saveStudentNumberInEEPROM(void);
 int CheckStudentNumberValidation(long int StudentNum);
 
 int main(void) {
-	
 	while (1)
 	{
+		
 	}
 	return 0;
 }
-
 
 void displayMainMenu(void)
 {
@@ -59,9 +60,23 @@ void displayMainMenu(void)
 
 void handleAttendanceInit(void)
 {
-	printf("Attendance Initialized. Waiting for student codes...\n");
-	// logic
-	// submut code or exit
+	char key;
+	while(1){
+		LCD_Clear();
+		LCD_String_xy(0,0,NULL);
+		LCD_String("1.Submit Student Code");
+		LCD_String_xy(1,0,NULL);
+		LCD_String("2.Exit");
+		key=scan_keypad();
+		if (key=='1')
+		{
+			handleStudentManagement();
+		}
+		else{
+			handleStudentManagement();
+			return;
+		}
+	}
 }
 
 void handleSubmitCode(void)
@@ -182,24 +197,67 @@ void handleViewPresentStudents(void)
 
 void handleTemperatureMonitor(void)
 {
-	printf("Monitoring Temperature...\n");
-	// logic
-	// ADC and then displaying on LCD
+	char Temperature[10];
+	float celsius;
+	keypad_init();
+	_delay_ms(100);
+	Buzzer_Init();
+	_delay_ms(100);
+	LCD_Init();
+	_delay_ms(100);
+	ADC_Init();
+	_delay_ms(100);
+	while(1)
+	{
+		Buzzer_Beep();
+		_delay_ms(1000);
+		LCD_String_xy(1,0,"Temperature");
+		celsius = (ADC_Read(0)*4.88);
+		celsius = (celsius/10.00);
+		sprintf(Temperature,"%d%cC  ", (int)celsius, degree_sysmbol);/* convert integer value to ASCII string */
+		LCD_String_xy(2,0,Temperature);/* send string data for printing */
+		_delay_ms(1000);
+		memset(Temperature,0,10);
+	}
 }
 
 void handleRetrieveStudentData(void)
 {
-	printf("Retrievinng Student Data...\n");
-	// logic
-	// save data to EEPROM using USART
-	// check success and failure and show on LCD
+	loadStudentCodesFromEEPROM();
+	for(int i=0;i<5;i++){
+		LCD_Clear();
+		LCD_String_xy(0,0,NULL);
+		LCD_Number(StudentCodes[i]);
+		_delay_ms(500);
+	}
+	USART_SendArray(StudentCodes,2);
 }
+
 
 void handleTrafficMonitor(void)
 {
-	printf("Monitoring Traffic...\n");
-	// logic
-	// Display data received from sonar
+	uint16_t pulseWidth;
+	int distance;
+	while(1){
+		_delay_ms(100);
+		HCSR04Trigger();
+		pulseWidth = GetPulseWidth();
+		if(pulseWidth==US_ERROR){
+			LCD_Clear();
+			LCD_String("Error: Echo timeout");
+			_delay_ms(300);
+		}
+		else if(pulseWidth ==US_NO_OBSTACLE){
+			LCD_Clear();
+			LCD_String("No Obstacle Detected");
+			_delay_ms(300);
+		}
+		else{
+			distance = (int)((pulseWidth * 0.034 / 2) + 0.5);
+			LCD_Clear();
+			LCD_Number(distance);
+		}
+	}
 }
 
 void loadStudentCodesFromEEPROM(void) {
@@ -214,8 +272,10 @@ void saveStudentNumberInEEPROM(void){
 	}
 }
 int CheckStudentNumberValidation(long int StudentNum){
-	if(StudentNum <= 40100000 || StudentNum >=  40200000)
-	return 0;
-	else
-	return 1;
+	if(StudentNum <= 40100000 || StudentNum >=  40200000){
+		return 0;
+	}
+	else{
+		return 1;
+	}
 }
