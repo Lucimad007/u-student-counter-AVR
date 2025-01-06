@@ -330,21 +330,33 @@ void handleStudentManagement(void)
 	char key;
 	long int StudentNumber=0;
 	LCD_String_xy(1, 0, NULL);
-	while(1){
+	char buffer[STUDENT_NUMBER_LENGTH+1];
+	unsigned char index = 0;
+	unsigned char chars = 0;
+	while (chars < (STUDENT_NUMBER_LENGTH + 1))
+	{
 		key=scan_keypad();
 		if(key!='o'){
 			StudentNumber=StudentNumber*10 + (key-'0');
+			buffer[index++] = key;
 			LCD_Char(key);
 		}
 		else{
 			break;
 		}
 	}
-	for(int i=0;i<StudentCount;i++){
-		if(StudentNumber==StudentCodes[i]){
+	buffer[index] = '\0';
+	_delay_ms(200);
+	char temp[STUDENT_NUMBER_LENGTH+1];
+	temp[STUDENT_NUMBER_LENGTH] = '\0';
+	for(unsigned char i = 0; i < StudentCount; i++)
+	{
+		EEPROM_ReadString(i * STUDENT_NUMBER_LENGTH, temp, STUDENT_NUMBER_LENGTH);
+		if(areEqual(buffer, temp, STUDENT_NUMBER_LENGTH))
+		{
 			LCD_Clear();
-			LCD_String("Student Found!");
-			_delay_ms(1000);
+			LCD_String_xy(0, 0, "Student Found!");
+			_delay_ms(500);
 			return;
 		}
 	}
