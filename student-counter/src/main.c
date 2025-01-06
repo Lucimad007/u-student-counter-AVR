@@ -6,6 +6,9 @@
 #include "buzzer.h"
 #include "usart.h"
 #include "ultrasonic.h"
+#include "eeprom.h"
+
+#define STUDENT_NUMBER_LENGTH 8
 
 uint16 EEPROM_START_ADDRESS = 0;
 
@@ -68,6 +71,7 @@ int CheckStudentNumberValidation(long int StudentNum);
 int main(void) {
 	USART_init(MYUBRR);
 	HCSR04Init();
+	//Buzzer_Init();
 	
     LCD_Init();
     keypad_init();
@@ -129,6 +133,7 @@ int main(void) {
                         {
                         case 5:
                             currentState = STATE_RETRIEVE_STUDENT_DATA;
+							handleRetrieveStudentData();
                             break;
                         case 6:
                             currentState = STATE_TRAFFIC_MONITOR;
@@ -167,19 +172,23 @@ int main(void) {
             case STATE_VIEW_PRESENT:	
 				// pressing any key is ok
                 currentState = STATE_MAIN_MENU;
+				menuNumber = FIRST_MENU;
 				displayFirstMainMenu();
                 break;
 
             case STATE_TEMPERATURE_MONITOR:
                 currentState = STATE_MAIN_MENU;
+				menuNumber = FIRST_MENU;
 				displayFirstMainMenu();
                 break;
             case STATE_RETRIEVE_STUDENT_DATA:
                 currentState = STATE_MAIN_MENU;
+				menuNumber = FIRST_MENU;
 				displayFirstMainMenu();
                 break;
             case STATE_TRAFFIC_MONITOR:
                 currentState = STATE_MAIN_MENU;
+				menuNumber = FIRST_MENU;
 				displayFirstMainMenu();
                 break;
 
@@ -266,19 +275,26 @@ void handleSubmitCode(void)
 	LCD_String_xy(0,0,NULL);
 	LCD_String("Student Number:");
 	LCD_String_xy(1,0,NULL);
-	while (1)
+	char buffer[STUDENT_NUMBER_LENGTH+1];
+	unsigned char index = 0;
+	unsigned char chars = 0;
+	while (chars < (STUDENT_NUMBER_LENGTH + 1))
 	{
 		key=scan_keypad();
 		if(key!='o'){
 			tmpStudentCode=tmpStudentCode*10 + (key-'0');
+			buffer[index++] = key;
 			LCD_Char(key);
 		}
 		else{
 			break;
 		}
+		chars++;
 	}
+	buffer[index] = '\0';
 	_delay_ms(200);
 	if(CheckStudentNumberValidation(tmpStudentCode)){
+		EEPROM_WriteString(StudentCount * STUDENT_NUMBER_LENGTH, buffer);
 		StudentCode=tmpStudentCode;
 		StudentCodes[StudentCount]=StudentCode;
 		StudentCount++;
@@ -329,47 +345,36 @@ void handleViewPresentStudents(void)
 	int Scroller=0;
 	char key;
 	LCD_Clear();
-	LCD_String_xy(0,0,NULL);
-	LCD_String("Present Students");
-	LCD_Number(StudentCount);
+	char str[16];
+	sprintf(str, "Presents: %d", StudentCount);
+	LCD_String_xy(0, 0, str);
 	_delay_ms(100);
-	LCD_Clear();
-	LCD_String_xy(0,0,NULL);
-	LCD_Number(StudentCodes[Scroller*2]);
-	LCD_String_xy(1,0,NULL);
-	LCD_Number(StudentCodes[Scroller*2+1]);
+
+	if(StudentCount == 0)
+	{
+		LCD_String_xy(1,0, "No Students.");
+		return;
+	}
+
+	// here we have at least 1 student displayed by default
+	char buff[STUDENT_NUMBER_LENGTH];
+	EEPROM_ReadString(Scroller * STUDENT_NUMBER_LENGTH, buff, STUDENT_NUMBER_LENGTH);
+	LCD_String_xy(1, 0, buff);
+
 	while(1){
-		if(StudentCount == 0)
-		{
-			LCD_String_xy(1,0, "No Students.");
-			break;
-		}
 		key=scan_keypad();
-		if(key=='0'){
-			Scroller=(Scroller+1) >= StudentCount ? 0 : (Scroller+1);
+		if(key=='9'){
+			Scroller=(Scroller+1) >= StudentCount ? Scroller : (Scroller+1);
 		}
-		else if(key=='8'){
+		else if(key=='7'){
 			Scroller=(Scroller-1) < 0 ? 0 : (Scroller-1);
 		}
 		else if(key=='o'){
 			break;
 		}
-		LCD_Clear();
-		if(Scroller*2<=StudentCount){
-			LCD_String_xy(0,0,NULL);
-			LCD_Number(StudentCodes[Scroller*2]);
-			LCD_String_xy(1,0,NULL);
-			LCD_Number(StudentCodes[Scroller*2+1]);
-		}
-		else{
-			if(StudentCount%2==0){
-				continue;
-			}
-			else{
-				LCD_String_xy(0,0,NULL);
-				LCD_Number(StudentCodes[StudentCount-1]);
-			}
-		}
+		char buff[8];
+		EEPROM_ReadString(Scroller * STUDENT_NUMBER_LENGTH, buff, STUDENT_NUMBER_LENGTH);
+		LCD_String_xy(1, 0, buff);
 
 	}
 }
@@ -387,6 +392,9 @@ void handleTemperatureMonitor(void)
 	_delay_ms(100);
 	while(1)
 	{
+		// char c = scan_keypad_nonblock();
+		// if(c == '1')
+		// 	break;
 		Buzzer_Beep();
 		_delay_ms(1000);
 		LCD_String_xy(0,0,"Temperature");
@@ -401,10 +409,23 @@ void handleTemperatureMonitor(void)
 
 void handleRetrieveStudentData(void)
 {
-	printf("Retrievinng Student Data...\n");
-	// logic
-	// save data to EEPROM using USART
-	// check success and failure and show on LCD
+	if(StudentCount == 0)
+	{	
+		LCD_Clear();
+		LCD_String_xy(0, 0, "No students");
+		LCD_String_xy(1, 0, "to retrieve!");
+		return;
+	}
+	unsigned char i;
+	for(i = 0; i < StudentCount; i++)
+	{
+		char buff[STUDENT_NUMBER_LENGTH];
+		EEPROM_ReadString(i * STUDENT_NUMBER_LENGTH, buff, STUDENT_NUMBER_LENGTH);
+		UART_SendString(buff);
+		_delay_ms(500);
+	}
+	LCD_Clear();
+	LCD_String_xy(0, 0, "Done!");
 }
 
 void handleTrafficMonitor(void)
