@@ -68,6 +68,8 @@ void loadStudentCodesFromEEPROM(void);
 void saveStudentNumberInEEPROM(void);
 int CheckStudentNumberValidation(long int StudentNum);
 
+bool areEqual(char* str1, char* str2, unsigned char minLength);
+
 int main(void) {
 	USART_init(MYUBRR);
 	HCSR04Init();
@@ -294,6 +296,19 @@ void handleSubmitCode(void)
 	buffer[index] = '\0';
 	_delay_ms(200);
 	if(CheckStudentNumberValidation(tmpStudentCode)){
+		char temp[STUDENT_NUMBER_LENGTH+1];
+		temp[STUDENT_NUMBER_LENGTH] = '\0';
+		for(unsigned char i = 0; i < StudentCount; i++)
+		{
+			EEPROM_ReadString(i * STUDENT_NUMBER_LENGTH, temp, STUDENT_NUMBER_LENGTH);
+			if(areEqual(buffer, temp, STUDENT_NUMBER_LENGTH))
+			{
+				LCD_Clear();
+				LCD_String_xy(0, 0, "already taken!");
+				_delay_ms(500);
+				return;
+			}
+		}
 		EEPROM_WriteString(StudentCount * STUDENT_NUMBER_LENGTH, buffer);
 		StudentCode=tmpStudentCode;
 		StudentCodes[StudentCount]=StudentCode;
@@ -484,3 +499,10 @@ int CheckStudentNumberValidation(long int StudentNum){
 	return 1;
 }
 
+bool areEqual(char* str1, char* str2, unsigned char minLength)
+{
+	for(unsigned char i = 0; i < minLength; i++)
+		if(str1[i] != str2[i])
+			return FALSE;
+	return TRUE;
+}
