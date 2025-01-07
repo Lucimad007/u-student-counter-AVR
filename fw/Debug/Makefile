@@ -53,6 +53,7 @@ SUBDIRS :=  \
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../src/buzzer.c \
+../src/eeprom.c \
 ../src/glcd.c \
 ../src/keypad.c \
 ../src/lcd.c \
@@ -71,6 +72,7 @@ ASM_SRCS +=
 
 OBJS +=  \
 src/buzzer.o \
+src/eeprom.o \
 src/glcd.o \
 src/keypad.o \
 src/lcd.o \
@@ -82,6 +84,7 @@ src/main.o
 
 OBJS_AS_ARGS +=  \
 src/buzzer.o \
+src/eeprom.o \
 src/glcd.o \
 src/keypad.o \
 src/lcd.o \
@@ -93,6 +96,7 @@ src/main.o
 
 C_DEPS +=  \
 src/buzzer.d \
+src/eeprom.d \
 src/glcd.d \
 src/keypad.d \
 src/lcd.d \
@@ -104,6 +108,7 @@ src/main.d
 
 C_DEPS_AS_ARGS +=  \
 src/buzzer.d \
+src/eeprom.d \
 src/glcd.d \
 src/keypad.d \
 src/lcd.d \
@@ -127,6 +132,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

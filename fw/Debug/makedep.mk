@@ -4,6 +4,8 @@
 
 src\buzzer.c
 
+src\eeprom.c
+
 src\glcd.c
 
 src\keypad.c

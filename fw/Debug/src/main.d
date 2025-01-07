@@ -19,10 +19,10 @@ src/main.d src/main.o: ../src/main.c ../src/micro_config.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h \
- ../src/keypad.h ../src/std_types.h ../src/common_macros.h ../src/lcd.h \
- ../src/sensors.h ../src/buzzer.h ../src/ultrasonic.h \
+ ../src/std_types.h ../src/keypad.h ../src/common_macros.h ../src/lcd.h \
+ ../src/sensors.h ../src/buzzer.h ../src/usart.h ../src/ultrasonic.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
- ../src/usart.h
+ ../src/eeprom.h
 
 ../src/micro_config.h:
 
@@ -66,9 +66,9 @@ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:
 
-../src/keypad.h:
-
 ../src/std_types.h:
+
+../src/keypad.h:
 
 ../src/common_macros.h:
 
@@ -78,8 +78,10 @@ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\eeprom.h:
 
 ../src/buzzer.h:
 
+../src/usart.h:
+
 ../src/ultrasonic.h:
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h:
 
-../src/usart.h:
+../src/eeprom.h:

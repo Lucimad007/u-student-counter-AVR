@@ -197,6 +197,12 @@
     <Compile Include="src\common_macros.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\eeprom.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\eeprom.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\glcd.c">
       <SubType>compile</SubType>
     </Compile>
