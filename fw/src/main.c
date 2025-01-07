@@ -100,6 +100,9 @@ typedef enum {
 
 State currentState = STATE_MAIN_MENU;
 
+
+//RFID test
+
 //int main(void) {
 	//USART_init(MYUBRR);
 	//HCSR04Init();
