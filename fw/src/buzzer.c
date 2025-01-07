@@ -1,36 +1,27 @@
-#include <avr/io.h>
-#include <util/delay.h>
 #include "buzzer.h"
 
-void Buzzer_Init(void) {
-	BUZZER_PORT_DIR |= (1 << BUZZER_PIN); // Set BUZZER_PIN as output
-	BUZZER_PORT_OUT &= ~(1 << BUZZER_PIN); // Ensure the buzzer is off initially
+void buzzer_init()
+{
+	BUZZER_DDR |= (1<<BUZZER_POS); // Set output
+	// _delay_ms(5);
 }
 
-void Buzzer_On(void) {
-	BUZZER_PORT_OUT |= (1 << BUZZER_PIN); // Set BUZZER_PIN high
+void buzzer_start()
+{
+	BUZZER_PORT |= (1 << BUZZER_POS); // Put 1 on BUZZER_POS of BUZZER_PORT
 }
 
-void Buzzer_Off(void) {
-	BUZZER_PORT_OUT &= ~(1 << BUZZER_PIN); // Set BUZZER_PIN low
+void buzzer_stop()
+{
+	BUZZER_PORT &= ~(1 << BUZZER_POS); // Put 0 on BUZZER_POS of BUZZER_PORT
 }
 
-void Buzzer_Beep(void) {
-	Buzzer_On();
-	_delay_ms(200); // Beep duration
-	Buzzer_Off();
-	_delay_ms(100); // Wait before next action
-}
-
-void Buzzer_CriticalWarning(void) {
-	for (int i = 0; i < 3; i++) {
-		Buzzer_Beep();
-		_delay_ms(200); // Delay between beeps
+void small_beep(uint16_t t_ms)
+{
+	buzzer_start();
+	for (uint16_t i = 0; i < t_ms; i+=10)
+	{
+		_delay_ms(10);
 	}
-}
-
-void Buzzer_Success(void) {
-	Buzzer_On();
-	_delay_ms(500); // Long beep for success
-	Buzzer_Off();
+	buzzer_stop();
 }

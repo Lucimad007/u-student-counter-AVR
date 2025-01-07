@@ -100,11 +100,11 @@ Discarded input sections
  .group         0x00000000        0x8 src/buzzer.o
  .group         0x00000000        0x8 src/buzzer.o
  .group         0x00000000        0x8 src/buzzer.o
+ .group         0x00000000        0x8 src/buzzer.o
+ .group         0x00000000        0x8 src/buzzer.o
  .text          0x00000000        0x0 src/buzzer.o
  .data          0x00000000        0x0 src/buzzer.o
  .bss           0x00000000        0x0 src/buzzer.o
- .text.Buzzer_Success
-                0x00000000       0x1c src/buzzer.o
  .group         0x00000000        0x8 src/eeprom.o
  .group         0x00000000        0x8 src/eeprom.o
  .group         0x00000000        0x8 src/eeprom.o
@@ -246,6 +246,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x34 src/keypad.o
  .debug_macro   0x00000000       0x18 src/keypad.o
  .debug_macro   0x00000000       0x6c src/keypad.o
+ .debug_macro   0x00000000       0x69 src/keypad.o
  .debug_macro   0x00000000       0x10 src/keypad.o
  .debug_macro   0x00000000      0x166 src/keypad.o
  .debug_macro   0x00000000       0x58 src/keypad.o
@@ -581,7 +582,6 @@ Discarded input sections
  .debug_macro   0x00000000       0x16 src/main.o
  .debug_macro   0x00000000       0x34 src/main.o
  .debug_macro   0x00000000       0x10 src/main.o
- .debug_macro   0x00000000       0x22 src/main.o
  .debug_macro   0x00000000       0x1c src/main.o
  .debug_macro   0x00000000       0x35 src/main.o
  .debug_macro   0x00000000       0x2e src/main.o
@@ -990,7 +990,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x170a
+.text           0x00000000     0x16e0
  *(.vectors)
  .vectors       0x00000000       0x54 W:/7.0/Packs/atmel/ATmega_DFP/1.2.132/gcc/dev/atmega32/avr5/crtatmega32.o
                 0x00000000                __vector_default
@@ -1074,207 +1074,204 @@ END GROUP
                 0x0000009a                __vector_20
                 0x0000009c                . = ALIGN (0x2)
  *(.text.*)
- .text.Buzzer_Init
-                0x0000009c        0x6 src/buzzer.o
-                0x0000009c                Buzzer_Init
- .text.Buzzer_On
-                0x000000a2        0x4 src/buzzer.o
-                0x000000a2                Buzzer_On
- .text.Buzzer_Off
-                0x000000a6        0x4 src/buzzer.o
-                0x000000a6                Buzzer_Off
- .text.Buzzer_Beep
-                0x000000aa       0x1e src/buzzer.o
-                0x000000aa                Buzzer_Beep
- .text.Buzzer_CriticalWarning
-                0x000000c8       0x2c src/buzzer.o
-                0x000000c8                Buzzer_CriticalWarning
+ .text.buzzer_init
+                0x0000009c        0x4 src/buzzer.o
+                0x0000009c                buzzer_init
+ .text.buzzer_start
+                0x000000a0        0x4 src/buzzer.o
+                0x000000a0                buzzer_start
+ .text.buzzer_stop
+                0x000000a4        0x4 src/buzzer.o
+                0x000000a4                buzzer_stop
+ .text.small_beep
+                0x000000a8       0x2c src/buzzer.o
+                0x000000a8                small_beep
  .text.EEPROM_Write
-                0x000000f4       0x10 src/eeprom.o
-                0x000000f4                EEPROM_Write
+                0x000000d4       0x10 src/eeprom.o
+                0x000000d4                EEPROM_Write
  .text.EEPROM_Read
-                0x00000104        0xe src/eeprom.o
-                0x00000104                EEPROM_Read
+                0x000000e4        0xe src/eeprom.o
+                0x000000e4                EEPROM_Read
  .text.EEPROM_WriteString
-                0x00000112       0x42 src/eeprom.o
-                0x00000112                EEPROM_WriteString
+                0x000000f2       0x42 src/eeprom.o
+                0x000000f2                EEPROM_WriteString
  .text.EEPROM_ReadString
-                0x00000154       0x68 src/eeprom.o
-                0x00000154                EEPROM_ReadString
+                0x00000134       0x68 src/eeprom.o
+                0x00000134                EEPROM_ReadString
  .text.keypad_init
-                0x000001bc        0xa src/keypad.o
-                0x000001bc                keypad_init
+                0x0000019c        0xa src/keypad.o
+                0x0000019c                keypad_init
  .text.scan_keypad
-                0x000001c6       0xda src/keypad.o
-                0x000001c6                scan_keypad
+                0x000001a6       0xda src/keypad.o
+                0x000001a6                scan_keypad
  .text.LCD_Command
-                0x000002a0       0x20 src/lcd.o
-                0x000002a0                LCD_Command
+                0x00000280       0x20 src/lcd.o
+                0x00000280                LCD_Command
  .text.LCD_Char
-                0x000002c0       0x20 src/lcd.o
-                0x000002c0                LCD_Char
+                0x000002a0       0x20 src/lcd.o
+                0x000002a0                LCD_Char
  .text.LCD_Init
-                0x000002e0       0x28 src/lcd.o
-                0x000002e0                LCD_Init
+                0x000002c0       0x28 src/lcd.o
+                0x000002c0                LCD_Init
  .text.LCD_String
-                0x00000308       0x1c src/lcd.o
-                0x00000308                LCD_String
+                0x000002e8       0x1c src/lcd.o
+                0x000002e8                LCD_String
  .text.LCD_String_xy
-                0x00000324       0x32 src/lcd.o
-                0x00000324                LCD_String_xy
+                0x00000304       0x32 src/lcd.o
+                0x00000304                LCD_String_xy
  .text.LCD_Clear
-                0x00000356        0xa src/lcd.o
-                0x00000356                LCD_Clear
+                0x00000336        0xa src/lcd.o
+                0x00000336                LCD_Clear
  .text.ADC_Init
-                0x00000360        0xc src/sensors.o
-                0x00000360                ADC_Init
+                0x00000340        0xc src/sensors.o
+                0x00000340                ADC_Init
  .text.ADC_Read
-                0x0000036c       0x20 src/sensors.o
-                0x0000036c                ADC_Read
+                0x0000034c       0x20 src/sensors.o
+                0x0000034c                ADC_Read
  .text.HCSR04Init
-                0x0000038c        0x4 src/ultrasonic.o
-                0x0000038c                HCSR04Init
+                0x0000036c        0x4 src/ultrasonic.o
+                0x0000036c                HCSR04Init
  .text.HCSR04Trigger
-                0x00000390        0xc src/ultrasonic.o
-                0x00000390                HCSR04Trigger
+                0x00000370        0xc src/ultrasonic.o
+                0x00000370                HCSR04Trigger
  .text.GetPulseWidth
-                0x0000039c       0xb8 src/ultrasonic.o
-                0x0000039c                GetPulseWidth
+                0x0000037c       0xb8 src/ultrasonic.o
+                0x0000037c                GetPulseWidth
  .text.USART_init
-                0x00000454        0xe src/usart.o
-                0x00000454                USART_init
+                0x00000434        0xe src/usart.o
+                0x00000434                USART_init
  .text.USART_Transmit
-                0x00000462        0x8 src/usart.o
-                0x00000462                USART_Transmit
+                0x00000442        0x8 src/usart.o
+                0x00000442                USART_Transmit
  .text.UART_SendString
-                0x0000046a       0x2a src/usart.o
-                0x0000046a                UART_SendString
+                0x0000044a       0x2a src/usart.o
+                0x0000044a                UART_SendString
  .text.displayGuideMenu
-                0x00000494       0x18 src/main.o
-                0x00000494                displayGuideMenu
+                0x00000474       0x18 src/main.o
+                0x00000474                displayGuideMenu
  .text.displayFirstMainMenu
-                0x000004ac       0x18 src/main.o
-                0x000004ac                displayFirstMainMenu
+                0x0000048c       0x18 src/main.o
+                0x0000048c                displayFirstMainMenu
  .text.displaySecondMainMenu
-                0x000004c4       0x18 src/main.o
-                0x000004c4                displaySecondMainMenu
+                0x000004a4       0x18 src/main.o
+                0x000004a4                displaySecondMainMenu
  .text.displayThirdMainMenu
-                0x000004dc       0x18 src/main.o
-                0x000004dc                displayThirdMainMenu
+                0x000004bc       0x18 src/main.o
+                0x000004bc                displayThirdMainMenu
  .text.displayAttendInitMenu
-                0x000004f4       0x18 src/main.o
-                0x000004f4                displayAttendInitMenu
+                0x000004d4       0x18 src/main.o
+                0x000004d4                displayAttendInitMenu
  .text.displayStudentManagementMenu
-                0x0000050c        0xe src/main.o
-                0x0000050c                displayStudentManagementMenu
+                0x000004ec        0xe src/main.o
+                0x000004ec                displayStudentManagementMenu
  .text.handleViewPresentStudents
-                0x0000051a      0x114 src/main.o
-                0x0000051a                handleViewPresentStudents
+                0x000004fa      0x114 src/main.o
+                0x000004fa                handleViewPresentStudents
  .text.handleTemperatureMonitor
-                0x0000062e       0xe0 src/main.o
-                0x0000062e                handleTemperatureMonitor
+                0x0000060e       0xe0 src/main.o
+                0x0000060e                handleTemperatureMonitor
  .text.handleRetrieveStudentData
-                0x0000070e       0xa8 src/main.o
-                0x0000070e                handleRetrieveStudentData
+                0x000006ee       0xa8 src/main.o
+                0x000006ee                handleRetrieveStudentData
  .text.handleTrafficMonitor
-                0x000007b6       0xf8 src/main.o
-                0x000007b6                handleTrafficMonitor
+                0x00000796       0xf8 src/main.o
+                0x00000796                handleTrafficMonitor
  .text.areEqual
-                0x000008ae       0x44 src/main.o
-                0x000008ae                areEqual
+                0x0000088e       0x44 src/main.o
+                0x0000088e                areEqual
  .text.handleSubmitCode
-                0x000008f2      0x228 src/main.o
-                0x000008f2                handleSubmitCode
+                0x000008d2      0x21e src/main.o
+                0x000008d2                handleSubmitCode
  .text.handleStudentManagement
-                0x00000b1a      0x10e src/main.o
-                0x00000b1a                handleStudentManagement
- .text.main     0x00000c28      0x144 src/main.o
-                0x00000c28                main
+                0x00000af0      0x10e src/main.o
+                0x00000af0                handleStudentManagement
+ .text.main     0x00000bfe      0x144 src/main.o
+                0x00000bfe                main
  .text.avr-libc.fplib
-                0x00000d6c        0xa w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(addsf3.o)
-                0x00000d6c                __subsf3
-                0x00000d6e                __addsf3
+                0x00000d42        0xa w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(addsf3.o)
+                0x00000d42                __subsf3
+                0x00000d44                __addsf3
  .text.avr-libc.fplib
-                0x00000d76       0xc0 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(addsf3x.o)
-                0x00000d90                __addsf3x
+                0x00000d4c       0xc0 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(addsf3x.o)
+                0x00000d66                __addsf3x
  .text.avr-libc.fplib
-                0x00000e36        0x4 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(divsf3.o)
-                0x00000e36                __divsf3
+                0x00000e0c        0x4 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(divsf3.o)
+                0x00000e0c                __divsf3
  .text.avr-libc.fplib
-                0x00000e3a       0xcc w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(divsf3x.o)
-                0x00000e50                __divsf3x
-                0x00000e54                __divsf3_pse
+                0x00000e10       0xcc w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(divsf3x.o)
+                0x00000e26                __divsf3x
+                0x00000e2a                __divsf3_pse
  .text.avr-libc.fplib
-                0x00000f06        0xa w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fixsfsi.o)
-                0x00000f06                __fixsfsi
+                0x00000edc        0xa w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fixsfsi.o)
+                0x00000edc                __fixsfsi
  .text.avr-libc.fplib
-                0x00000f10       0x58 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fixunssfsi.o)
-                0x00000f10                __fixunssfsi
+                0x00000ee6       0x58 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fixunssfsi.o)
+                0x00000ee6                __fixunssfsi
  .text.avr-libc.fplib
-                0x00000f68       0x7a w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(floatsisf.o)
-                0x00000f68                __floatunsisf
-                0x00000f6c                __floatsisf
+                0x00000f3e       0x7a w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(floatsisf.o)
+                0x00000f3e                __floatunsisf
+                0x00000f42                __floatsisf
  .text.avr-libc.fplib
-                0x00000fe2        0xc w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_inf.o)
-                0x00000fe2                __fp_inf
+                0x00000fb8        0xc w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_inf.o)
+                0x00000fb8                __fp_inf
  .text.avr-libc.fplib
-                0x00000fee        0x6 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_nan.o)
-                0x00000fee                __fp_nan
+                0x00000fc4        0x6 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_nan.o)
+                0x00000fc4                __fp_nan
  .text.avr-libc.fplib
-                0x00000ff4        0xe w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_pscA.o)
-                0x00000ff4                __fp_pscA
+                0x00000fca        0xe w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_pscA.o)
+                0x00000fca                __fp_pscA
  .text.avr-libc.fplib
-                0x00001002        0xe w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_pscB.o)
-                0x00001002                __fp_pscB
+                0x00000fd8        0xe w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_pscB.o)
+                0x00000fd8                __fp_pscB
  .text.avr-libc.fplib
-                0x00001010       0x22 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_round.o)
-                0x00001010                __fp_round
+                0x00000fe6       0x22 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_round.o)
+                0x00000fe6                __fp_round
  .text.avr-libc.fplib
-                0x00001032       0x44 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_split3.o)
-                0x00001032                __fp_split3
-                0x00001042                __fp_splitA
+                0x00001008       0x44 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_split3.o)
+                0x00001008                __fp_split3
+                0x00001018                __fp_splitA
  .text.avr-libc.fplib
-                0x00001076        0xe w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_zero.o)
-                0x00001076                __fp_zero
-                0x00001078                __fp_szero
+                0x0000104c        0xe w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(fp_zero.o)
+                0x0000104c                __fp_zero
+                0x0000104e                __fp_szero
  .text.avr-libc.fplib
-                0x00001084        0x4 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(mulsf3.o)
-                0x00001084                __mulsf3
+                0x0000105a        0x4 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(mulsf3.o)
+                0x0000105a                __mulsf3
  .text.avr-libc.fplib
-                0x00001088       0xc2 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(mulsf3x.o)
-                0x0000109c                __mulsf3x
-                0x000010a0                __mulsf3_pse
- .text.libgcc   0x0000114a        0xc w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
-                0x0000114a                __tablejump2__
+                0x0000105e       0xc2 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a(mulsf3x.o)
+                0x00001072                __mulsf3x
+                0x00001076                __mulsf3_pse
+ .text.libgcc   0x00001120        0xc w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+                0x00001120                __tablejump2__
  .text.avr-libc
-                0x00001156       0x3e w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(sprintf.o)
-                0x00001156                sprintf
+                0x0000112c       0x3e w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(sprintf.o)
+                0x0000112c                sprintf
  .text.avr-libc
-                0x00001194      0x3a4 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
-                0x00001194                vfprintf
+                0x0000116a      0x3a4 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+                0x0000116a                vfprintf
  .text.avr-libc
-                0x00001538       0x16 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
-                0x00001538                strnlen_P
+                0x0000150e       0x16 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
+                0x0000150e                strnlen_P
  .text.avr-libc
-                0x0000154e       0x16 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen.o)
-                0x0000154e                strnlen
+                0x00001524       0x16 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen.o)
+                0x00001524                strnlen
  .text.avr-libc
-                0x00001564       0x78 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(fputc.o)
-                0x00001564                fputc
+                0x0000153a       0x78 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(fputc.o)
+                0x0000153a                fputc
  .text.avr-libc
-                0x000015dc       0xbc w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
-                0x000015dc                __ultoa_invert
+                0x000015b2       0xbc w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
+                0x000015b2                __ultoa_invert
  .text.libgcc.prologue
-                0x00001698       0x38 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_prologue.o)
-                0x00001698                __prologue_saves__
+                0x0000166e       0x38 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_prologue.o)
+                0x0000166e                __prologue_saves__
  .text.libgcc.prologue
-                0x000016d0       0x36 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_epilogue.o)
-                0x000016d0                __epilogue_restores__
-                0x00001706                . = ALIGN (0x2)
+                0x000016a6       0x36 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_epilogue.o)
+                0x000016a6                __epilogue_restores__
+                0x000016dc                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00001706        0x0 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x00001706                _exit
-                0x00001706                exit
+ .fini9         0x000016dc        0x0 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x000016dc                _exit
+                0x000016dc                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -1293,11 +1290,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00001706        0x4 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x000016dc        0x4 w:/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000170a                _etext = .
+                0x000016e0                _etext = .
 
-.data           0x00800060      0x19a load address 0x0000170a
+.data           0x00800060      0x19a load address 0x000016e0
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -1333,8 +1330,8 @@ END GROUP
  COMMON         0x008001fe      0x190 src/main.o
                 0x008001fe                StudentCodes
                 0x0080038e                PROVIDE (__bss_end, .)
-                0x0000170a                __data_load_start = LOADADDR (.data)
-                0x000018a4                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000016e0                __data_load_start = LOADADDR (.data)
+                0x0000187a                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x0080038e        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -1416,105 +1413,105 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x258
+.debug_aranges  0x00000000      0x248
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x48 src/buzzer.o
+                0x00000000       0x38 src/buzzer.o
  .debug_aranges
-                0x00000048       0x48 src/eeprom.o
+                0x00000038       0x48 src/eeprom.o
  .debug_aranges
-                0x00000090       0x30 src/keypad.o
+                0x00000080       0x30 src/keypad.o
  .debug_aranges
-                0x000000c0       0x50 src/lcd.o
+                0x000000b0       0x50 src/lcd.o
  .debug_aranges
-                0x00000110       0x30 src/sensors.o
+                0x00000100       0x30 src/sensors.o
  .debug_aranges
-                0x00000140       0x30 src/ultrasonic.o
+                0x00000130       0x30 src/ultrasonic.o
  .debug_aranges
-                0x00000170       0x40 src/usart.o
+                0x00000160       0x40 src/usart.o
  .debug_aranges
-                0x000001b0       0xa8 src/main.o
+                0x000001a0       0xa8 src/main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x2c87
+.debug_info     0x00000000     0x2b6f
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x4e6 W:/7.0/Packs/atmel/ATmega_DFP/1.2.132/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_info    0x000004e6      0x281 src/buzzer.o
- .debug_info    0x00000767      0x25b src/eeprom.o
- .debug_info    0x000009c2      0x256 src/keypad.o
- .debug_info    0x00000c18      0x4a0 src/lcd.o
- .debug_info    0x000010b8      0x187 src/sensors.o
- .debug_info    0x0000123f      0x190 src/ultrasonic.o
- .debug_info    0x000013cf      0x3b9 src/usart.o
- .debug_info    0x00001788     0x14ff src/main.o
+ .debug_info    0x000004e6      0x18e src/buzzer.o
+ .debug_info    0x00000674      0x25b src/eeprom.o
+ .debug_info    0x000008cf      0x256 src/keypad.o
+ .debug_info    0x00000b25      0x4a0 src/lcd.o
+ .debug_info    0x00000fc5      0x187 src/sensors.o
+ .debug_info    0x0000114c      0x190 src/ultrasonic.o
+ .debug_info    0x000012dc      0x3b9 src/usart.o
+ .debug_info    0x00001695     0x14da src/main.o
 
-.debug_abbrev   0x00000000     0x1054
+.debug_abbrev   0x00000000     0x1038
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x4a3 W:/7.0/Packs/atmel/ATmega_DFP/1.2.132/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_abbrev  0x000004a3      0x120 src/buzzer.o
- .debug_abbrev  0x000005c3      0x119 src/eeprom.o
- .debug_abbrev  0x000006dc      0x15a src/keypad.o
- .debug_abbrev  0x00000836      0x19d src/lcd.o
- .debug_abbrev  0x000009d3      0x10e src/sensors.o
- .debug_abbrev  0x00000ae1      0x128 src/ultrasonic.o
- .debug_abbrev  0x00000c09      0x199 src/usart.o
- .debug_abbrev  0x00000da2      0x2b2 src/main.o
+ .debug_abbrev  0x000004a3      0x104 src/buzzer.o
+ .debug_abbrev  0x000005a7      0x119 src/eeprom.o
+ .debug_abbrev  0x000006c0      0x15a src/keypad.o
+ .debug_abbrev  0x0000081a      0x19d src/lcd.o
+ .debug_abbrev  0x000009b7      0x10e src/sensors.o
+ .debug_abbrev  0x00000ac5      0x128 src/ultrasonic.o
+ .debug_abbrev  0x00000bed      0x199 src/usart.o
+ .debug_abbrev  0x00000d86      0x2b2 src/main.o
 
-.debug_line     0x00000000     0x2317
+.debug_line     0x00000000     0x22b2
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x115 W:/7.0/Packs/atmel/ATmega_DFP/1.2.132/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_line    0x00000115      0x2e0 src/buzzer.o
- .debug_line    0x000003f5      0x2d8 src/eeprom.o
- .debug_line    0x000006cd      0x41e src/keypad.o
- .debug_line    0x00000aeb      0x409 src/lcd.o
- .debug_line    0x00000ef4      0x286 src/sensors.o
- .debug_line    0x0000117a      0x2f2 src/ultrasonic.o
- .debug_line    0x0000146c      0x3ff src/usart.o
- .debug_line    0x0000186b      0xaac src/main.o
+ .debug_line    0x00000115      0x287 src/buzzer.o
+ .debug_line    0x0000039c      0x2d8 src/eeprom.o
+ .debug_line    0x00000674      0x41e src/keypad.o
+ .debug_line    0x00000a92      0x409 src/lcd.o
+ .debug_line    0x00000e9b      0x286 src/sensors.o
+ .debug_line    0x00001121      0x2f2 src/ultrasonic.o
+ .debug_line    0x00001413      0x3ff src/usart.o
+ .debug_line    0x00001812      0xaa0 src/main.o
 
-.debug_frame    0x00000000      0x61c
+.debug_frame    0x00000000      0x608
  *(.debug_frame)
- .debug_frame   0x00000000       0x74 src/buzzer.o
- .debug_frame   0x00000074       0xd4 src/eeprom.o
- .debug_frame   0x00000148       0x64 src/keypad.o
- .debug_frame   0x000001ac       0xac src/lcd.o
- .debug_frame   0x00000258       0x44 src/sensors.o
- .debug_frame   0x0000029c       0x44 src/ultrasonic.o
- .debug_frame   0x000002e0      0x108 src/usart.o
- .debug_frame   0x000003e8      0x234 src/main.o
+ .debug_frame   0x00000000       0x60 src/buzzer.o
+ .debug_frame   0x00000060       0xd4 src/eeprom.o
+ .debug_frame   0x00000134       0x64 src/keypad.o
+ .debug_frame   0x00000198       0xac src/lcd.o
+ .debug_frame   0x00000244       0x44 src/sensors.o
+ .debug_frame   0x00000288       0x44 src/ultrasonic.o
+ .debug_frame   0x000002cc      0x108 src/usart.o
+ .debug_frame   0x000003d4      0x234 src/main.o
 
-.debug_str      0x00000000     0x79cc
+.debug_str      0x00000000     0x799e
  *(.debug_str)
  .debug_str     0x00000000      0x196 W:/7.0/Packs/atmel/ATmega_DFP/1.2.132/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_str     0x00000196     0x5f90 src/buzzer.o
-                               0x602d (size before relaxing)
- .debug_str     0x00006126       0xb9 src/eeprom.o
+ .debug_str     0x00000196     0x62db src/buzzer.o
+                               0x6378 (size before relaxing)
+ .debug_str     0x00006471       0xb0 src/eeprom.o
                                0x5bff (size before relaxing)
- .debug_str     0x000061df     0x1022 src/keypad.o
+ .debug_str     0x00006521      0xca8 src/keypad.o
                                0x70a9 (size before relaxing)
- .debug_str     0x00007201       0xe6 src/lcd.o
+ .debug_str     0x000071c9       0xe6 src/lcd.o
                                0x7142 (size before relaxing)
- .debug_str     0x000072e7       0x64 src/sensors.o
+ .debug_str     0x000072af       0x74 src/sensors.o
                                0x5fea (size before relaxing)
- .debug_str     0x0000734b      0x244 src/ultrasonic.o
+ .debug_str     0x00007323      0x244 src/ultrasonic.o
                                0x640d (size before relaxing)
- .debug_str     0x0000758f       0x86 src/usart.o
+ .debug_str     0x00007567       0x80 src/usart.o
                                0x6f9a (size before relaxing)
- .debug_str     0x00007615      0x3b7 src/main.o
-                               0x7836 (size before relaxing)
+ .debug_str     0x000075e7      0x3b7 src/main.o
+                               0x7815 (size before relaxing)
 
-.debug_loc      0x00000000     0x20df
+.debug_loc      0x00000000     0x1fb0
  *(.debug_loc)
- .debug_loc     0x00000000      0x1b8 src/buzzer.o
- .debug_loc     0x000001b8      0x32a src/eeprom.o
- .debug_loc     0x000004e2      0x36c src/keypad.o
- .debug_loc     0x0000084e      0x3ae src/lcd.o
- .debug_loc     0x00000bfc       0xab src/sensors.o
- .debug_loc     0x00000ca7      0x104 src/ultrasonic.o
- .debug_loc     0x00000dab      0x566 src/usart.o
- .debug_loc     0x00001311      0xdce src/main.o
+ .debug_loc     0x00000000       0xd1 src/buzzer.o
+ .debug_loc     0x000000d1      0x32a src/eeprom.o
+ .debug_loc     0x000003fb      0x36c src/keypad.o
+ .debug_loc     0x00000767      0x3ae src/lcd.o
+ .debug_loc     0x00000b15       0xab src/sensors.o
+ .debug_loc     0x00000bc0      0x104 src/ultrasonic.o
+ .debug_loc     0x00000cc4      0x566 src/usart.o
+ .debug_loc     0x0000122a      0xd86 src/main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -1534,58 +1531,60 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000      0x248
+.debug_ranges   0x00000000      0x218
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x58 src/buzzer.o
- .debug_ranges  0x00000058       0x50 src/eeprom.o
- .debug_ranges  0x000000a8       0x20 src/keypad.o
- .debug_ranges  0x000000c8       0x40 src/lcd.o
- .debug_ranges  0x00000108       0x20 src/sensors.o
- .debug_ranges  0x00000128       0x20 src/ultrasonic.o
- .debug_ranges  0x00000148       0x30 src/usart.o
- .debug_ranges  0x00000178       0xd0 src/main.o
+ .debug_ranges  0x00000000       0x28 src/buzzer.o
+ .debug_ranges  0x00000028       0x50 src/eeprom.o
+ .debug_ranges  0x00000078       0x20 src/keypad.o
+ .debug_ranges  0x00000098       0x40 src/lcd.o
+ .debug_ranges  0x000000d8       0x20 src/sensors.o
+ .debug_ranges  0x000000f8       0x20 src/ultrasonic.o
+ .debug_ranges  0x00000118       0x30 src/usart.o
+ .debug_ranges  0x00000148       0xd0 src/main.o
 
-.debug_macro    0x00000000     0x2cf8
+.debug_macro    0x00000000     0x2d32
  *(.debug_macro)
- .debug_macro   0x00000000       0xb2 src/buzzer.o
- .debug_macro   0x000000b2      0xa4e src/buzzer.o
- .debug_macro   0x00000b00       0x10 src/buzzer.o
- .debug_macro   0x00000b10      0x1c9 src/buzzer.o
- .debug_macro   0x00000cd9      0x2fc src/buzzer.o
- .debug_macro   0x00000fd5       0x9e src/buzzer.o
- .debug_macro   0x00001073      0xc24 src/buzzer.o
- .debug_macro   0x00001c97      0x170 src/buzzer.o
- .debug_macro   0x00001e07       0xbd src/buzzer.o
- .debug_macro   0x00001ec4       0x34 src/buzzer.o
- .debug_macro   0x00001ef8       0x18 src/buzzer.o
- .debug_macro   0x00001f10       0x6c src/buzzer.o
- .debug_macro   0x00001f7c       0x10 src/buzzer.o
- .debug_macro   0x00001f8c      0x166 src/buzzer.o
- .debug_macro   0x000020f2       0x22 src/buzzer.o
- .debug_macro   0x00002114       0x90 src/eeprom.o
- .debug_macro   0x000021a4       0x10 src/eeprom.o
- .debug_macro   0x000021b4      0x12b src/keypad.o
- .debug_macro   0x000022df       0x22 src/keypad.o
- .debug_macro   0x00002301       0x1c src/keypad.o
- .debug_macro   0x0000231d       0x69 src/keypad.o
- .debug_macro   0x00002386       0x16 src/keypad.o
- .debug_macro   0x0000239c       0x20 src/keypad.o
- .debug_macro   0x000023bc       0x10 src/keypad.o
- .debug_macro   0x000023cc       0xf6 src/keypad.o
- .debug_macro   0x000024c2       0x33 src/keypad.o
- .debug_macro   0x000024f5       0x34 src/keypad.o
- .debug_macro   0x00002529       0x16 src/keypad.o
- .debug_macro   0x0000253f      0x13a src/lcd.o
- .debug_macro   0x00002679       0x34 src/lcd.o
- .debug_macro   0x000026ad       0xb2 src/sensors.o
- .debug_macro   0x0000275f       0x10 src/sensors.o
- .debug_macro   0x0000276f       0xcf src/ultrasonic.o
- .debug_macro   0x0000283e       0x1c src/ultrasonic.o
- .debug_macro   0x0000285a      0x10e src/ultrasonic.o
- .debug_macro   0x00002968       0x60 src/ultrasonic.o
- .debug_macro   0x000029c8       0x2e src/ultrasonic.o
- .debug_macro   0x000029f6      0x123 src/usart.o
- .debug_macro   0x00002b19      0x185 src/main.o
- .debug_macro   0x00002c9e       0x5a src/main.o
+ .debug_macro   0x00000000       0xba src/buzzer.o
+ .debug_macro   0x000000ba      0xa4e src/buzzer.o
+ .debug_macro   0x00000b08       0x16 src/buzzer.o
+ .debug_macro   0x00000b1e       0x10 src/buzzer.o
+ .debug_macro   0x00000b2e      0x1c9 src/buzzer.o
+ .debug_macro   0x00000cf7      0x2fc src/buzzer.o
+ .debug_macro   0x00000ff3       0x9e src/buzzer.o
+ .debug_macro   0x00001091      0xc24 src/buzzer.o
+ .debug_macro   0x00001cb5      0x170 src/buzzer.o
+ .debug_macro   0x00001e25       0xbd src/buzzer.o
+ .debug_macro   0x00001ee2       0x34 src/buzzer.o
+ .debug_macro   0x00001f16       0x18 src/buzzer.o
+ .debug_macro   0x00001f2e       0x6c src/buzzer.o
+ .debug_macro   0x00001f9a       0x10 src/buzzer.o
+ .debug_macro   0x00001faa      0x166 src/buzzer.o
+ .debug_macro   0x00002110       0x69 src/buzzer.o
+ .debug_macro   0x00002179       0x16 src/buzzer.o
+ .debug_macro   0x0000218f       0x90 src/eeprom.o
+ .debug_macro   0x0000221f       0x10 src/eeprom.o
+ .debug_macro   0x0000222f      0x12b src/keypad.o
+ .debug_macro   0x0000235a       0x22 src/keypad.o
+ .debug_macro   0x0000237c       0x1c src/keypad.o
+ .debug_macro   0x00002398       0x16 src/keypad.o
+ .debug_macro   0x000023ae       0x20 src/keypad.o
+ .debug_macro   0x000023ce       0x10 src/keypad.o
+ .debug_macro   0x000023de       0xf6 src/keypad.o
+ .debug_macro   0x000024d4       0x33 src/keypad.o
+ .debug_macro   0x00002507       0x34 src/keypad.o
+ .debug_macro   0x0000253b       0x16 src/keypad.o
+ .debug_macro   0x00002551      0x13a src/lcd.o
+ .debug_macro   0x0000268b       0x34 src/lcd.o
+ .debug_macro   0x000026bf       0xb2 src/sensors.o
+ .debug_macro   0x00002771       0x10 src/sensors.o
+ .debug_macro   0x00002781       0xcf src/ultrasonic.o
+ .debug_macro   0x00002850       0x1c src/ultrasonic.o
+ .debug_macro   0x0000286c      0x10e src/ultrasonic.o
+ .debug_macro   0x0000297a       0x60 src/ultrasonic.o
+ .debug_macro   0x000029da       0x2e src/ultrasonic.o
+ .debug_macro   0x00002a08      0x123 src/usart.o
+ .debug_macro   0x00002b2b      0x185 src/main.o
+ .debug_macro   0x00002cb0       0x28 src/main.o
+ .debug_macro   0x00002cd8       0x5a src/main.o
 OUTPUT(fw.elf elf32-avr)
 LOAD linker stubs

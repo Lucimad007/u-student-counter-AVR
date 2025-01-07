@@ -72,7 +72,6 @@ bool areEqual(char* str1, char* str2, unsigned char minLength);
 
 int main(void) {
 	
-	
 	USART_init(MYUBRR);
 	HCSR04Init();
 	
@@ -305,10 +304,9 @@ void handleSubmitCode(void)
 			if(areEqual(buffer, temp, STUDENT_NUMBER_LENGTH))
 			{
 				LCD_Clear();
-				Buzzer_Init();
+				buzzer_init();
 				_delay_ms(1000);
-				Buzzer_Beep();
-				_delay_ms(100);
+				small_beep(100);
 				LCD_String_xy(0, 0, "already taken!");
 				_delay_ms(500);
 				return;
@@ -325,10 +323,11 @@ void handleSubmitCode(void)
 	else{
 		LCD_Clear();
 		LCD_String_xy(0, 0, "Not Accepted!");
-		Buzzer_Init();
-		_delay_ms(1000);
-		Buzzer_Beep();
+		buzzer_init();
 		_delay_ms(100);
+		small_beep(100);
+		buzzer_stop();
+		return -1;
 	}
 }
 

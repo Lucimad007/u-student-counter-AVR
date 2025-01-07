@@ -1,4 +1,4 @@
-src/buzzer.d src/buzzer.o: ../src/buzzer.c \
+src/buzzer.d src/buzzer.o: ../src/buzzer.c ../src/buzzer.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -13,7 +13,9 @@ src/buzzer.d src/buzzer.o: ../src/buzzer.c \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
- ../src/buzzer.h
+ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h
+
+../src/buzzer.h:
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -43,4 +45,4 @@ w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
 
 w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
 
-../src/buzzer.h:
+w:\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
