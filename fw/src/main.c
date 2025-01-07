@@ -3,9 +3,8 @@
 #include "lcd.h"
 #include "sensors.h"
 #include "buzzer.h"
-#include "USART.h"
 #include "ultrasonic.h"
-
+#include "usart.h"
 
 
 uint16 EEPROM_START_ADDRESS = 0;
