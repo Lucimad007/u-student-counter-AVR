@@ -7,6 +7,7 @@
 #include "usart.h"
 #include "ultrasonic.h"
 #include "eeprom.h"
+#include "timer.h"
 
 #define STUDENT_NUMBER_LENGTH 8
 #define MAX_STUDENT_IN_ONE_LINE_LCD_DDRAM 5
@@ -57,7 +58,6 @@ void displayAttendInitMenu(void);
 void displayStudentManagementMenu(void);
 
 // state machine
-void handleAttendanceInit(void);
 void handleSubmitCode(void);
 void handleStudentManagement(void);
 void handleViewPresentStudents(void);
@@ -76,6 +76,7 @@ void shiftDisplayStudents();
 int main(void) {
 	USART_init(MYUBRR);
 	HCSR04Init();
+	timer1_init();
 	//Buzzer_Init();
 	
     LCD_Init();
@@ -96,7 +97,27 @@ int main(void) {
                         {
                             case 1:
                                 currentState = STATE_ATTENDANCE_INIT;
-								displayAttendInitMenu();
+									if(!permision)
+									{
+										LCD_Clear();
+										LCD_String_xy(0, 0, "timeout!");
+										LCD_String_xy(1, 0, "1.restart 2.exit");
+										char c = scan_keypad();
+										if(c == '1')
+										{
+											timer1_init();	// restart
+											currentState = STATE_MAIN_MENU;
+											menuNumber = FIRST_MENU;
+											displayFirstMainMenu();
+										}
+										else if(c == '2')
+										{
+											currentState = STATE_MAIN_MENU;
+											menuNumber = FIRST_MENU;
+											displayFirstMainMenu();
+										}
+									} else
+										displayAttendInitMenu();
                                 break;
                             case 2:
                                 currentState = STATE_STUDENT_MANAGEMENT;
@@ -245,33 +266,6 @@ void displayStudentManagementMenu(void)
 {
 	LCD_Clear();
 	LCD_String_xy(0,0, "Search Student:");
-}
-
-void handleAttendanceInit(void)
-{
-	switch (attendInitSubeMenu)
-    {
-        case ATTEND_READY:
-            if(choice == 1)
-            {
-                handleSubmitCode();
-				currentState = STATE_MAIN_MENU;
-                attendInitSubeMenu = NONE;
-                displayFirstMainMenu();
-            }
-            else if(choice == 2)
-            {
-                // exit
-                currentState = STATE_MAIN_MENU;
-                attendInitSubeMenu = NONE;
-                displayFirstMainMenu();
-            }
-            break;
-        case NONE:
-            if(choice == 1)
-                attendInitSubeMenu = ATTEND_READY;
-            break;
-        }
 }
 
 void handleSubmitCode(void)
