@@ -70,6 +70,8 @@ int CheckStudentNumberValidation(long int StudentNum);
 
 bool areEqual(char* str1, char* str2, unsigned char minLength);
 
+
+
 int main(void) {
 	
 	USART_init(MYUBRR);
@@ -84,6 +86,18 @@ int main(void) {
 	while (1) {
 		char ch = scan_keypad();
 		choice = ch - '0';
+		if (ch == '=') {
+			displayGuideMenu();
+			// Wait for another key press before resuming the state logic
+			_delay_ms(200); // Debounce delay
+			continue; // Skip the state logic and resume
+		}
+		if (ch == '=') {
+			displayGuideMenu();
+			// Wait for another key press before resuming the state logic
+			_delay_ms(200); // Debounce delay
+			continue; // Skip the state logic and resume
+		}
 		switch (currentState) {
 			case STATE_MAIN_MENU:
 			switch (menuNumber)
