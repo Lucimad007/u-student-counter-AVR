@@ -70,6 +70,50 @@ int CheckStudentNumberValidation(long int StudentNum);
 
 bool areEqual(char* str1, char* str2, unsigned char minLength);
 
+#include "micro_config.h"
+#include "std_types.h"
+#include "keypad.h"
+#include "lcd.h"
+#include "sensors.h"
+#include "buzzer.h"
+#include "usart.h"
+#include "ultrasonic.h"
+#include "eeprom.h"
+#include "rfid.h"
+
+#define STUDENT_NUMBER_LENGTH 8
+
+uint16 EEPROM_START_ADDRESS = 0;
+
+int StudentCount = 0;
+long int StudentCodes[100];
+
+typedef enum {
+	STATE_MAIN_MENU,
+	STATE_ATTENDANCE_INIT,
+	STATE_STUDENT_MANAGEMENT,
+	STATE_VIEW_PRESENT,
+	STATE_TEMPERATURE_MONITOR,
+	STATE_RETRIEVE_STUDENT_DATA,
+	STATE_TRAFFIC_MONITOR
+} State;
+
+State currentState = STATE_MAIN_MENU;
+
+//int main(void) {
+	//USART_init(MYUBRR);
+	//HCSR04Init();
+	//LCD_Init();
+	//RFID_Init(); // Initialize RFID system
+//
+	//while (1) {
+		//char rfid_data[15];
+		//RFID_Read(rfid_data); // Read RFID tag
+		//// Add RFID validation and logic here
+	//}
+//
+	//return 0;
+//}
 
 
 int main(void) {

@@ -224,6 +224,12 @@
     <Compile Include="src\micro_config.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\rfid.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\rfid.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\sensors.h">
       <SubType>compile</SubType>
     </Compile>

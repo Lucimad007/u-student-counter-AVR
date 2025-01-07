@@ -57,6 +57,7 @@ C_SRCS +=  \
 ../src/glcd.c \
 ../src/keypad.c \
 ../src/lcd.c \
+../src/rfid.c \
 ../src/sensors.c \
 ../src/ultrasonic.c \
 ../src/usart.c \
@@ -76,6 +77,7 @@ src/eeprom.o \
 src/glcd.o \
 src/keypad.o \
 src/lcd.o \
+src/rfid.o \
 src/sensors.o \
 src/ultrasonic.o \
 src/usart.o \
@@ -88,6 +90,7 @@ src/eeprom.o \
 src/glcd.o \
 src/keypad.o \
 src/lcd.o \
+src/rfid.o \
 src/sensors.o \
 src/ultrasonic.o \
 src/usart.o \
@@ -100,6 +103,7 @@ src/eeprom.d \
 src/glcd.d \
 src/keypad.d \
 src/lcd.d \
+src/rfid.d \
 src/sensors.d \
 src/ultrasonic.d \
 src/usart.d \
@@ -112,6 +116,7 @@ src/eeprom.d \
 src/glcd.d \
 src/keypad.d \
 src/lcd.d \
+src/rfid.d \
 src/sensors.d \
 src/ultrasonic.d \
 src/usart.d \
@@ -132,6 +137,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

@@ -13,6 +13,12 @@ void USART_init(unsigned int ubrr) {
 	UCSRC = (1 << UCSZ1) | (1 << UCSZ0); // Set UCSZ1 and UCSZ0 for 8-bit data
 }
 
+unsigned char USART_RxChar(void) {
+	// Wait for data to be received (polling)
+	while (!(UCSRA & (1 << RXC)));
+	// Get and return received data from buffer
+	return UDR;
+}
 void USART_Transmit(unsigned char data)
 {
 	while(!(UCSRA &(1<<UDRE)));

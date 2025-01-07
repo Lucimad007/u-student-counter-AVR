@@ -12,6 +12,8 @@ src\keypad.c
 
 src\lcd.c
 
+src\rfid.c
+
 src\sensors.c
 
 src\ultrasonic.c
