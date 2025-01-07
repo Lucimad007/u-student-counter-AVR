@@ -1,7 +1,8 @@
 
+
 #include <avr/io.h>
 #include <util/delay.h>
-#include "USART.h"
+#include "usart.h"
 #include "lcd.h"
 #include "micro_config.h"
 

@@ -9,6 +9,7 @@
 #define BUZZER_PORT_IN  PINA
 #define BUZZER_PORT_DIR DDRA
 
+
 void Buzzer_Init(void);
 void Buzzer_On(void);
 void Buzzer_Off(void);
