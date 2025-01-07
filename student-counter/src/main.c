@@ -9,6 +9,7 @@
 #include "eeprom.h"
 
 #define STUDENT_NUMBER_LENGTH 8
+#define MAX_STUDENT_IN_ONE_LINE_LCD_DDRAM 5
 
 uint16 EEPROM_START_ADDRESS = 0;
 
@@ -70,6 +71,8 @@ int CheckStudentNumberValidation(long int StudentNum);
 
 bool areEqual(char* str1, char* str2, unsigned char minLength);
 
+void shiftDisplayStudents();
+
 int main(void) {
 	USART_init(MYUBRR);
 	HCSR04Init();
@@ -115,6 +118,9 @@ int main(void) {
                             case 3:
                                 currentState = STATE_VIEW_PRESENT;
 								handleViewPresentStudents();
+								currentState = STATE_MAIN_MENU;
+								menuNumber = FIRST_MENU;
+								displayFirstMainMenu();
                                 break;
                             case 4:
                                 currentState = STATE_TEMPERATURE_MONITOR;
@@ -178,10 +184,7 @@ int main(void) {
                 break;
 
             case STATE_VIEW_PRESENT:	
-				// pressing any key is ok
-                currentState = STATE_MAIN_MENU;
-				menuNumber = FIRST_MENU;
-				displayFirstMainMenu();
+				
                 break;
 
             case STATE_TEMPERATURE_MONITOR:
@@ -377,34 +380,45 @@ void handleViewPresentStudents(void)
 	char str[16];
 	sprintf(str, "Presents: %d", StudentCount);
 	LCD_String_xy(0, 0, str);
-	_delay_ms(100);
 
 	if(StudentCount == 0)
 	{
 		LCD_String_xy(1,0, "No Students.");
 		return;
 	}
+	_delay_ms(500);
 
-	// here we have at least 1 student displayed by default
-	char buff[STUDENT_NUMBER_LENGTH];
-	EEPROM_ReadString(Scroller * STUDENT_NUMBER_LENGTH, buff, STUDENT_NUMBER_LENGTH);
-	LCD_String_xy(1, 0, buff);
+	// // here we have at least 1 student displayed by default
+	// char buff[STUDENT_NUMBER_LENGTH];
+	// EEPROM_ReadString(Scroller * STUDENT_NUMBER_LENGTH, buff, STUDENT_NUMBER_LENGTH);
+	// LCD_String_xy(1, 0, buff);
 
+	LCD_Clear();
+	shiftDisplayStudents();
+	_delay_ms(50);
+	LCD_Command(0x02);
+	_delay_ms(50);
+	unsigned char i = 0;
 	while(1){
-		key=scan_keypad();
-		if(key=='9'){
-			Scroller=(Scroller+1) >= StudentCount ? Scroller : (Scroller+1);
-		}
-		else if(key=='7'){
-			Scroller=(Scroller-1) < 0 ? 0 : (Scroller-1);
-		}
-		else if(key=='o'){
+		if(isKeypadPressed())
 			break;
-		}
-		char buff[8];
-		EEPROM_ReadString(Scroller * STUDENT_NUMBER_LENGTH, buff, STUDENT_NUMBER_LENGTH);
-		LCD_String_xy(1, 0, buff);
+		// key=scan_keypad();
+		// if(key=='9'){
+		// 	Scroller=(Scroller+1) >= StudentCount ? Scroller : (Scroller+1);
+		// }
+		// else if(key=='7'){
+		// 	Scroller=(Scroller-1) < 0 ? 0 : (Scroller-1);
+		// }
+		// else if(key=='o'){
+		// 	break;
+		// }
+		// char buff[8];
+		// EEPROM_ReadString(Scroller * STUDENT_NUMBER_LENGTH, buff, STUDENT_NUMBER_LENGTH);
+		// LCD_String_xy(1, 0, buff);
 
+		LCD_Command(0x18);
+		_delay_ms(50);
+		i = i >= 47 ? 0 : ++i;
 	}
 }
 
@@ -514,6 +528,35 @@ int CheckStudentNumberValidation(long int StudentNum){
 	return 0;
 	else
 	return 1;
+}
+
+void shiftDisplayStudents()
+{
+	unsigned char max = StudentCount > 2 * MAX_STUDENT_IN_ONE_LINE_LCD_DDRAM ? 2 * MAX_STUDENT_IN_ONE_LINE_LCD_DDRAM : StudentCount;
+	unsigned char i;
+	unsigned char pos = 0;
+	for(i = 0; i < (max/2 + max % 2); i++)
+	{
+		char student[STUDENT_NUMBER_LENGTH+3];
+		EEPROM_ReadString(i * STUDENT_NUMBER_LENGTH, student, STUDENT_NUMBER_LENGTH);
+		student[STUDENT_NUMBER_LENGTH] = ' ';
+		student[STUDENT_NUMBER_LENGTH + 1] = ' ';
+		student[STUDENT_NUMBER_LENGTH + 2] = '\0';
+		LCD_String_xy(0, (STUDENT_NUMBER_LENGTH + 2) * pos, student);
+		pos++;
+	}
+
+	pos = 0;
+	for(; i < max; i++)
+	{
+		char student[STUDENT_NUMBER_LENGTH+3];
+		EEPROM_ReadString(i * STUDENT_NUMBER_LENGTH, student, STUDENT_NUMBER_LENGTH);
+		student[STUDENT_NUMBER_LENGTH] = ' ';
+		student[STUDENT_NUMBER_LENGTH + 1] = ' ';
+		student[STUDENT_NUMBER_LENGTH + 2] = '\0';
+		LCD_String_xy(1, (STUDENT_NUMBER_LENGTH + 2) * pos, student);
+		pos++;
+	}
 }
 
 bool areEqual(char* str1, char* str2, unsigned char minLength)

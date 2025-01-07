@@ -54,10 +54,10 @@ void LCD_String (char *str)		/* Send string to LCD function */
 
 void LCD_String_xy (char row, char pos, char *str)/* Send string to LCD with xy position */
 {
-	if (row == 0 && pos<16)
-	LCD_Command((pos & 0x0F)|0x80);	/* Command of first row and required position<16 */
-	else if (row == 1 && pos<16)
-	LCD_Command((pos & 0x0F)|0xC0);	/* Command of first row and required position<16 */
+	if (row == 0 && pos<64)
+	LCD_Command(pos + 0x80);	/* Command of first row and required position<16 */
+	else if (row == 1 && pos<64)
+	LCD_Command(pos + 0xC0);	/* Command of first row and required position<16 */
 	LCD_String(str);		/* Call LCD string function */
 }
 void LCD_Number(unsigned int num) {
