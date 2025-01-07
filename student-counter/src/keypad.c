@@ -98,48 +98,14 @@ char scan_keypad(void) {
 }
 
 
-// non-blocking Function to scan the keypad and return the pressed key
-// char scan_keypad_nonblock(void) {
-// 	unsigned char colStatus, rowStatus;
+// we do NOT need to debounce as we only check for being pressed, and not release
+bool isKeypadPressed(void) {
+    KEYPAD_PORT_OUT = KEYPAD_PORT_OUT & 0x0F; // Clear output for rows
+	unsigned char colStatus = KEYPAD_PORT_IN & 0x0F; // Read input for columns// Read the column status
 
-// 	KEYPAD_PORT_OUT = KEYPAD_PORT_OUT & 0x0F; // Clear output for rows
-// 	colStatus = KEYPAD_PORT_IN & 0x0F; // Read input for columns
+    if (colStatus != 0x0F) {
+        return TRUE;
+    }
 
-
-// 	_delay_us(2); // Debounce delay
-// 	colStatus = KEYPAD_PORT_IN & 0x0F; // Read input for columns
-
-// 	// Check each row to find which button is pressed
-// 		KEYPAD_PORT_OUT = 0xEF; // Activate first row
-// 		colStatus = KEYPAD_PORT_IN & 0x0F; // Check input
-// 		if (colStatus != 0x0F) {
-// 			rowStatus = 0; // First row detected
-// 		}
-// 		KEYPAD_PORT_OUT = 0xDF; // Activate second row
-// 		colStatus = KEYPAD_PORT_IN & 0x0F; // Check input
-// 		if (colStatus != 0x0F) {
-// 			rowStatus = 1; // Second row detected
-// 		}
-// 		KEYPAD_PORT_OUT = 0xBF; // Activate third row
-// 		colStatus = KEYPAD_PORT_IN & 0x0F; // Check input
-// 		if (colStatus != 0x0F) {
-// 			rowStatus = 2; // Third row detected
-// 		}
-// 		KEYPAD_PORT_OUT = 0x7F; // Activate fourth row
-// 		colStatus = KEYPAD_PORT_IN & 0x0F; // Check input
-// 		if (colStatus != 0x0F) {
-// 			rowStatus = 3; // Fourth row detected
-// 		}
-
-// 	// Determine which key was pressed in the active row
-// 	if (colStatus == 0x0E) {
-// 		return keypad[rowStatus][0]; // First column
-// 	}
-// 	if (colStatus == 0x0D) {
-// 		return keypad[rowStatus][1]; // Second column
-// 	}
-// 	if (colStatus == 0x0B) {
-// 		return keypad[rowStatus][2]; // Third column
-// 	}
-// 	return keypad[rowStatus][3]; // Fourth column
-// }
+    return FALSE;
+}

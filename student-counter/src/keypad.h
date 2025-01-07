@@ -11,7 +11,7 @@
 
 void keypad_init(void);
 char scan_keypad(void);
-// char scan_keypad_nonblock(void);
+bool isKeypadPressed(void);
 void num_to_string(unsigned int num, char* buffer);
 
 #endif /* KEYPAD_H_ */

@@ -119,6 +119,9 @@ int main(void) {
                             case 4:
                                 currentState = STATE_TEMPERATURE_MONITOR;
 								handleTemperatureMonitor();
+								currentState = STATE_MAIN_MENU;
+								menuNumber = FIRST_MENU;
+								displayFirstMainMenu();
                                 break;
                             case 7:
                                 menuNumber = FIRST_MENU;
@@ -140,6 +143,9 @@ int main(void) {
                         case 6:
                             currentState = STATE_TRAFFIC_MONITOR;
 							handleTrafficMonitor();
+							currentState = STATE_MAIN_MENU;
+							menuNumber = FIRST_MENU;
+							displayFirstMainMenu();
                             break;
                         case 7:
                             menuNumber = SECOND_MENU;
@@ -179,9 +185,7 @@ int main(void) {
                 break;
 
             case STATE_TEMPERATURE_MONITOR:
-                currentState = STATE_MAIN_MENU;
-				menuNumber = FIRST_MENU;
-				displayFirstMainMenu();
+
                 break;
             case STATE_RETRIEVE_STUDENT_DATA:
                 currentState = STATE_MAIN_MENU;
@@ -189,9 +193,7 @@ int main(void) {
 				displayFirstMainMenu();
                 break;
             case STATE_TRAFFIC_MONITOR:
-                currentState = STATE_MAIN_MENU;
-				menuNumber = FIRST_MENU;
-				displayFirstMainMenu();
+
                 break;
 
         
@@ -419,17 +421,14 @@ void handleTemperatureMonitor(void)
 	_delay_ms(100);
 	while(1)
 	{
-		// char c = scan_keypad_nonblock();
-		// if(c == '1')
-		// 	break;
+		if(isKeypadPressed())
+			break;
 		Buzzer_Beep();
-		_delay_ms(1000);
 		LCD_String_xy(0,0,"Temperature");
 		celsius = (ADC_Read(0)*4.88);
 		celsius = (celsius/10.00);
 		sprintf(Temperature,"%d%cC  ", (int)celsius, degree_sysmbol);/* convert integer value to ASCII string */
 		LCD_String_xy(1,0,Temperature);/* send string data for printing */
-		_delay_ms(1000);
 		memset(Temperature,0,10);
 	}
 }
@@ -460,8 +459,14 @@ void handleTrafficMonitor(void)
 	uint16_t pulseWidth;
 	int distance;
 	uint8 count = -1, prev_count = -1;
+	LCD_Clear();
 	LCD_String_xy(0, 0, "Count: 0");
+	// to stablize lcd and keypad:
+	_delay_ms(500);
+
 	while(1){
+		if(isKeypadPressed())
+			break;
 		_delay_ms(100);
 		HCSR04Trigger();
 		pulseWidth = GetPulseWidth();
